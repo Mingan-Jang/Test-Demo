@@ -52,18 +52,6 @@ public class UploadController {
 	}
 	
 	
-	@GetMapping("/getpathParam")
-	public String getPathRequestParam(@RequestBody Optional<String> id) {
-		AtomicReference<String> msg = new AtomicReference<>("Id not number"); 
-		id.ifPresent(idValue -> {
-			System.out.println(idValue);
-			boolean isNumeric = idValue.matches("\\d+");
-			if (isNumeric) {
-				msg.set("Id is number");
-			}
-		});
-		return msg.get();
-	}
 	
 	
 	@PostMapping("/postpath")
