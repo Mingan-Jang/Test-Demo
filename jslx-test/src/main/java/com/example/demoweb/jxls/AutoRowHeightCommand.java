@@ -17,6 +17,8 @@ public class AutoRowHeightCommand extends AbstractCommand {
 
 	@Override
 	public Size applyAt(CellRef cellRef, Context context) {
+		
+		System.out.println("Enter the AutoRowHeightCommand");
 		Area area = getAreaList().get(0);
 	    Size size = area.applyAt(cellRef, context);
 
