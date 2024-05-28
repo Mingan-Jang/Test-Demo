@@ -1,74 +1,63 @@
 package com.jjk.upload_test.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.multipart.MultipartFile;
 
-@RestController
-@RequestMapping("/api")
+import io.swagger.v3.oas.annotations.Operation;
+
+@Controller
+@RequestMapping("/uploads")
 public class UploadController {
 
-	String UPLOAD_DIRECTORY = "./uploads/";
+	String UPLOAD_DIRECTORY = "uploads/";
 
+	@Operation(summary = "Get the HTML template")
 	@GetMapping("/getpath")
 	public String getPath() {
 		return "imageupload/index";
 	}
-	
-	@GetMapping("/getpath/{id}")
-	public String getPathPathVariable(@PathVariable Optional<String> id) {
-		 AtomicReference<String> msg = new AtomicReference<>("Id not number");
 
-	        id.ifPresent(idValue -> {
-	            System.out.println(idValue);
-	            boolean isNumeric = idValue.matches("\\d+");
-	            if (isNumeric) {
-	                msg.set("Id is number");
-	            }
-	        });
+	@Operation(summary = "Upload the file")
+	@PostMapping("/upload")
+	public String uploadImage(Model model, @RequestParam("image") MultipartFile[] files) throws IOException {
+		StringBuilder fileNames = new StringBuilder();
 
-	        return msg.get();
-	}
-	
-	@GetMapping("/getpathParam")
-	public String getPathRequestParam(@RequestParam Optional<String> id) {
-		AtomicReference<String> msg = new AtomicReference<>("Id not number"); 
-		id.ifPresent(idValue -> {
-			System.out.println(idValue);
-			boolean isNumeric = idValue.matches("\\d+");
-			if (isNumeric) {
-				msg.set("Id is number");
+		try {
+			for (MultipartFile file : files) {
+				// 定義文件的存儲路徑和文件名
+				Path fileNameAndPath = Paths.get(UPLOAD_DIRECTORY, file.getOriginalFilename());
+
+				// 將文件名添加到StringBuilder中
+				fileNames.append(file.getOriginalFilename());
+
+				// 將文件的字節數據寫入指定路徑
+				Files.write(fileNameAndPath, file.getBytes());
+
+				System.out.println(fileNameAndPath.toAbsolutePath());
+				// 將上傳成功的消息添加到模型中，以便在視圖中顯示
+				model.addAttribute("msg", "Uploaded images: " + fileNames.toString());
 			}
-		});
-		return msg.get();
-	}
-	
-	
-	
-	
-	@PostMapping("/postpath")
-	public String postPath(@RequestParam String name) {
-		System.out.println(name);
-		return "imageupload/index";
-	}
-	
-	@PutMapping("/putpath")
-	public String putPath(@RequestParam String name) {
-		return "imageupload/index";
-	}
+		} catch (MaxUploadSizeExceededException e) {
+			System.out.println("SSSSS");
+			model.addAttribute("msg", "Upload fail");
+		}
 
-	@GetMapping("/uploadimage")
-	public String displayUploadForm() {
-		return "imageupload/index";
+		System.out.println("SSSSS");
+		return "redirect:/uploads/getpath";
 	}
-
 
 }
