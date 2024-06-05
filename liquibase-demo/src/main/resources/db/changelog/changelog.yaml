@@ -1,0 +1,73 @@
+databaseChangeLog:
+
+            
+  - changeSet:
+      id: "2"
+      author: jjk
+      changes:
+        - createTable:
+            tableName: viewpractice
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: category
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: map_id
+                  type: int
+                  constraints:
+                    nullable: true
+  - changeSet:
+      id: "3"
+      author: jjk
+      changes:
+        - createTable:
+            tableName: viewpractice_mappid
+            columns:
+              - column:
+                  name: mainid
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: category
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: "4"
+      author: jjk
+      changes:
+        - sqlFile:
+            path: sql/insertdata.sql
+            encoding: UTF-8
+            relativeToChangelogFile: true
+            endDelimiter: ;
+            stripComments: true
+
+  - changeSet:
+      id: "5"
+      author: jjk3
+      preConditions:
+        - onFail: CONTINUE
+        - viewExists:
+            viewName: myview
+      changes:
+        - sqlFile:
+            path: sql/createview.sql
+            encoding: UTF-8
+            relativeToChangelogFile: true
+            endDelimiter: ;
+            stripComments: true
+            
