@@ -38,6 +38,12 @@
 		},
 		{
 			"path": "upload-test"
+		},
+		{
+			"path": "main-test"
+		},
+		{
+			"path": "temp"
 		}
 	]
 }
