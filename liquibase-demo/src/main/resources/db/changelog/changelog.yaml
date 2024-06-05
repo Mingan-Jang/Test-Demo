@@ -1,9 +1,12 @@
 databaseChangeLog:
-
-            
   - changeSet:
-      id: "2"
+      id: "1"
       author: jjk
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - tableExists:
+                tableName: viewpractice
       changes:
         - createTable:
             tableName: viewpractice
@@ -26,8 +29,13 @@ databaseChangeLog:
                   constraints:
                     nullable: true
   - changeSet:
-      id: "3"
+      id: "2"
       author: jjk
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - tableExists:
+                tableName: viewpractice_mappid
       changes:
         - createTable:
             tableName: viewpractice_mappid
@@ -44,25 +52,46 @@ databaseChangeLog:
                   type: varchar(255)
                   constraints:
                     nullable: false
-
   - changeSet:
-      id: "4"
-      author: jjk
+      id: "3_U_1"
+      author: jjk3
+      preConditions:
+        - onFail: CONTINUE
+        - sqlCheck:
+            expectedResult: 1
+            sql: SELECT CASE WHEN COUNT(*) > 12 THEN 1 ELSE 0 END FROM viewpractice
       changes:
         - sqlFile:
-            path: sql/insertdata.sql
+            path: sql/insertdata_viewpractice.sql
             encoding: UTF-8
             relativeToChangelogFile: true
             endDelimiter: ;
             stripComments: true
 
   - changeSet:
-      id: "5"
+      id: "3_U_2"
       author: jjk3
       preConditions:
         - onFail: CONTINUE
-        - viewExists:
-            viewName: myview
+        - sqlCheck:
+            sql: SELECT COUNT(*) FROM viewpractice_mappid
+            expectedResult: 0
+      changes:
+        - sqlFile:
+            path: sql/insertdata_viewpractice_mappid.sql
+            encoding: UTF-8
+            relativeToChangelogFile: true
+            endDelimiter: ;
+            stripComments: true
+
+  - changeSet:
+      id: "4"
+      author: jjk3
+      preConditions:
+        - onFail: CONTINUE
+        - not:
+            - viewExists:
+                viewName: myview
       changes:
         - sqlFile:
             path: sql/createview.sql
@@ -70,4 +99,3 @@ databaseChangeLog:
             relativeToChangelogFile: true
             endDelimiter: ;
             stripComments: true
-            
