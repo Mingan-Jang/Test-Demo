@@ -1,4 +1,4 @@
-package com.jjk.pattern_test;
+package com.jjk.patterntest;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -6,8 +6,6 @@ import java.util.Queue;
 interface SkillCommand {
 	void execute();
 }
-
-
 
 class Poison implements SkillCommand {
 

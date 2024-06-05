@@ -1,18 +1,14 @@
 databaseChangeLog:
-  "-changeSet":
-    id: 1
-  author: JJK
-  changes:
-    "-createTable":
-      tableName: test
-      columns:
-        - column: 
-          name: id
-          type: VARCHAR(20)
-          constraints:
-            primaryKey: true
-          -column:
-            name: leaf
-            type: INT
-            constraints:
-              nullable: true
+  - changeSet:
+      id: 1
+      author: pratik
+
+  - include:
+      id: 2
+      file: 001_create_tables.sql
+      relativeToChangelogFile: true
+
+  - include:
+      id: 3
+      file: 002_Insert_liquiTable.sql
+      relativeToChangelogFile: true
