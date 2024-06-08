@@ -1,0 +1,184 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: "4_0_2"
+      author: jjk
+      runOnChange: true
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: person
+      changes:
+            - dropTable:
+               tableName: person
+
+  - changeSet:
+      id: "4_0_3"
+      author: jjk
+      runOnChange: true
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: no_label
+      changes:
+            - dropTable:
+               tableName: no_label
+
+            
+  - changeSet:
+      id: '4_1'
+      author: jjk
+      runAlways: true
+      changes:
+        - createTable:
+            tableName: person
+            columns:
+              - column:
+                  name: firstname
+                  type: varchar(255)
+              - column:
+                  name: type
+                  type: varchar(255)
+              - column:
+                  name: version
+                  type: varchar(255)
+              - column:
+                  name: desp
+                  type: varchar(255)
+  - changeSet:
+      id: '4_2'
+      author: jjk
+      runAlways: true
+      labels: 'v.1.0,dev'
+      changes:
+        - insert:
+            tableName: person
+            columns:
+              - column:
+                  name: firstname
+                  value: 'Meow1'
+              - column:
+                  name: type
+                  value: dev
+              - column:
+                  name: version
+                  value: v.1.0
+              - column:
+                  name: desp
+                  value: id=4_2
+  - changeSet:
+      id: '4_3'
+      author: jjk
+      runAlways: true
+      labels: 'v.2.0,dev'
+      changes:
+        - insert:
+            tableName: person
+            columns:
+              - column:
+                  name: firstname
+                  value: 'Meow2'
+              - column:
+                  name: type
+                  value: 'dev'
+              - column:
+                  name: version
+                  value: 'v.2.0'
+              - column:
+                  name: desp
+                  value: 'id=4_3'
+  - changeSet:
+      id: '4_4'
+      author: jjk
+      runAlways: true
+      labels: 'test,v.2.0'
+      changes:
+        - insert:
+            tableName: person
+            columns:
+              - column:
+                  name: firstname
+                  value: 'Meow3'
+              - column:
+                  name: type
+                  value: 'test'
+              - column:
+                  name: version
+                  value: 'v.2.0'
+              - column:
+                  name: desp
+                  value: 'id=4_4'
+  - changeSet:
+      id: '4_5'
+      author: jjk
+      runAlways: true
+      labels: '@onlyU'
+      changes:
+        - insert:
+            tableName: person
+            columns:
+              - column:
+                  name: firstname
+                  value: 'onlyU2'
+              - column:
+                  name: type
+                  value: ''
+              - column:
+                  name: version
+                  value: ''
+              - column:
+                  name: desp
+                  value: 'id=4_5 , with only @onlyU tag'
+
+  - changeSet:
+      id: '4_6'
+      author: jjk
+      runAlways: true
+      labels: 'onlyU'
+      changes:
+        - insert:
+            tableName: person
+            columns:
+              - column:
+                  name: firstname
+                  value: 'onlyU'
+              - column:
+                  name: type
+                  value: ''
+              - column:
+                  name: version
+                  value: ''
+              - column:
+                  name: desp
+                  value: 'id=4_6 , with only onlyU tag'
+                  
+  - changeSet:
+      id: '4_7'
+      author: jjk
+      runAlways: true
+      labels: 'isMember'
+      changes:
+        - addColumn:
+            tableName: person
+            columns:
+              - column:
+                  name: isMember
+                  type: boolean
+                  
+                  
+  - changeSet:
+      id: '4_8'
+      author: jjk
+      runAlways: true
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - tableExists:
+                tableName: no_label
+      changes:
+        - createTable:
+            tableName: no_label
+            columns:
+              - column:
+                  name: no_label_col
+                  type: varchar(255)

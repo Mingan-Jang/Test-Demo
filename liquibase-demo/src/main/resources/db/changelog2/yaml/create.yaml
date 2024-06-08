@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: "2_1"
+      author: "jjk"
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - tableExists:
+                tableName: create2_table
+      changes:
+        - createTable:
+            tableName: create2_table
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(20)

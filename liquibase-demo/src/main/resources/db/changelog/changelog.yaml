@@ -1,7 +1,7 @@
 databaseChangeLog:
   - changeSet:
-      id: "1"
-      author: jjk
+      id: "1_1"
+      author: jjk22
       preConditions:
         - onFail: MARK_RAN
         - not:
@@ -28,8 +28,9 @@ databaseChangeLog:
                   type: int
                   constraints:
                     nullable: true
+
   - changeSet:
-      id: "2"
+      id: "1_2"
       author: jjk
       preConditions:
         - onFail: MARK_RAN
@@ -53,13 +54,13 @@ databaseChangeLog:
                   constraints:
                     nullable: false
   - changeSet:
-      id: "3_U_1"
+      id: "1_3_1"
       author: jjk3
       preConditions:
         - onFail: CONTINUE
         - sqlCheck:
             expectedResult: 1
-            sql: SELECT CASE WHEN COUNT(*) > 12 THEN 1 ELSE 0 END FROM viewpractice
+            sql: SELECT CASE WHEN COUNT(*) >= 5 THEN 1 ELSE 0 END FROM viewpractice
       changes:
         - sqlFile:
             path: sql/insertdata_viewpractice.sql
@@ -69,7 +70,7 @@ databaseChangeLog:
             stripComments: true
 
   - changeSet:
-      id: "3_U_2"
+      id: "1_3_2"
       author: jjk3
       preConditions:
         - onFail: CONTINUE
@@ -85,7 +86,7 @@ databaseChangeLog:
             stripComments: true
 
   - changeSet:
-      id: "4"
+      id: "1_4"
       author: jjk3
       preConditions:
         - onFail: CONTINUE

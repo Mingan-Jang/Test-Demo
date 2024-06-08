@@ -1,0 +1,25 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: "4_0_2"
+      author: jjk
+      runAlways: true
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: person
+      changes:
+        - dropTable:
+            tableName: person
+
+  - changeSet:
+      id: "4_0_3"
+      author: jjk
+      runAlways: true
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: no_label
+      changes:
+        - dropTable:
+            tableName: no_label

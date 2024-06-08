@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: "3_validSum"
+      author: jjk
+      validCheckSum: 9:2c630990219fc6ab4c6d3268b4d18b5c
+      changes:
+        - addColumn:
+            tableName: runOnChangeTest
+            columns:
+              - column:
+                  name: newWioasd
+                  type: varchar(20)
+              - column:
+                  name: newType
+                  type: varchar(10)
