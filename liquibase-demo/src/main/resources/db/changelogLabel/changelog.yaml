@@ -15,7 +15,7 @@ databaseChangeLog:
   - changeSet:
       id: "4_0_3"
       author: jjk
-      runAlways: true
+
       preConditions:
         - onFail: MARK_RAN
         - tableExists:
