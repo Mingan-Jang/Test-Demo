@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: "1_1"
+      author: jjk22
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - tableExists:
+                tableName: viewpractice
+      changes:
+        - createTable:
+            tableName: viewpractice
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: category
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: map_id
+                  type: int
+                  constraints:
+                    nullable: true
