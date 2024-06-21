@@ -1,0 +1,2 @@
+JMH S 22 com.baeldung.BenchMark S 71 com.baeldung.jmh_generated.BenchMark_testSQLQueryWithForceIndex_jmhTest S 26 testSQLQueryWithForceIndex S 10 Throughput E A 1 1 1 E I 1 2 T 3 3 s E I 1 5 E E I 1 1 E E E E E E U 7 SECONDS E E 
+JMH S 22 com.baeldung.BenchMark S 74 com.baeldung.jmh_generated.BenchMark_testSQLQueryWithoutForceIndex_jmhTest S 29 testSQLQueryWithoutForceIndex S 10 Throughput E A 1 1 1 E I 1 2 T 3 3 s E I 1 5 E E I 1 1 E E E E E E U 7 SECONDS E E 

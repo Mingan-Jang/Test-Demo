@@ -1,0 +1,17 @@
+{"properties": [
+  {
+    "name": "myspringvar.var1",
+    "type": "java.lang.String",
+    "description": "A description for 'myspringvar.var1'"
+  },
+  {
+    "name": "sp.dev_var",
+    "type": "java.lang.String",
+    "description": "A description for 'sp.dev_var'"
+  },
+  {
+    "name": "sp.defult_var",
+    "type": "java.lang.String",
+    "description": "A description for 'sp.defult_var'"
+  }
+]}
