@@ -1,6 +1,7 @@
 -- INDEX 
-DROP INDEX IF EXISTS idx_t1  ON jmh_sql_test.sub_index_test;
 CREATE INDEX idx_t1 ON jmh_sql_test.sub_index_test  (createtime, gupid, delete_flag);
+DROP INDEX idx_t1  ON jmh_sql_test.sub_index_test;
+
 SHOW INDEX FROM jmh_sql_test.sub_index_test;
 
 -- -- 測試INDEX
@@ -22,27 +23,67 @@ SELECT *
     
 
 -- SEARCH
--- 沒有使用INDEX
+-- 對照組一
+-- 不使用INDEX，索引失效(查詢無索引欄位creator)，WHERE條件符合最左匹配原則(覆蓋到全部索引)
 EXPLAIN
 SELECT COUNT(*) FROM (
     SELECT creator,status, MAX(status) OVER (PARTITION BY gupid) AS max_status
     FROM jmh_sql_test.sub_index_test sit
-    WHERE gupid = 'group2' 
+    WHERE gupid = 'group5' 
     AND createtime >= '2022-06-17 01:00:00' AND createtime <= '2023-12-17 01:00:00'
     AND delete_flag = false
 ) AS subquery
 WHERE status = max_status;
 
 
--- 有使用INDEX
+-- 強制使用INDEX，索引有效，WHERE條件符合最左匹配原則(覆蓋到全部索引)
 EXPLAIN
 SELECT COUNT(*) FROM (
     SELECT gupid, status ,MAX(status) OVER (PARTITION BY gupid) AS max_status
     FROM jmh_sql_test.sub_index_test sit FORCE INDEX (idx_t1)
-    WHERE gupid = 'group2' 
+    WHERE gupid = 'group5'
     AND createtime >= '2022-06-17 01:00:00' AND createtime <= '2023-12-17 01:00:00'
     AND delete_flag = false
 ) AS subquery
 WHERE status = max_status;
 
+-- 對照組二
+-- 強制使用INDEX，查詢有索引欄位，WHERE條件符合最左匹配原則(覆蓋到部分索引)
+EXPLAIN
+SELECT COUNT(*) FROM (
+    SELECT gupid, status ,MAX(status) OVER (PARTITION BY gupid) AS max_status
+    FROM jmh_sql_test.sub_index_test sit FORCE INDEX (idx_t1)
+    WHERE  createtime >= '2022-06-17 01:00:00' AND createtime <= '2023-12-17 01:00:00'
+) AS subquery
+WHERE status = max_status;
 
+
+-- 不使用INDEX，查詢有索引欄位，WHERE條件符合最左匹配原則(覆蓋到部分索引)
+EXPLAIN
+SELECT COUNT(*) FROM (
+    SELECT gupid, status ,MAX(status) OVER (PARTITION BY gupid) AS max_status
+    FROM jmh_sql_test.sub_index_test sit 
+    WHERE  createtime >= '2022-06-17 01:00:00' AND createtime <= '2023-12-17 01:00:00'
+) AS subquery
+WHERE status = max_status;
+
+
+
+-- 對照組三
+-- 不使用INDEX，查詢所有欄位，WHERE條件符合最左匹配原則(覆蓋到部分索引)
+EXPLAIN
+SELECT COUNT(*) FROM (
+    SELECT * ,MAX(status) OVER (PARTITION BY gupid) AS max_status
+    FROM jmh_sql_test.sub_index_test sit 
+    WHERE  createtime >= '2022-06-17 01:00:00' AND createtime <= '2023-12-17 01:00:00'
+) AS subquery
+WHERE status = max_status;
+
+-- 強制使用INDEX，查詢所有欄位，WHERE條件符合最左匹配原則(覆蓋到部分索引)
+EXPLAIN
+SELECT COUNT(*) FROM (
+    SELECT * ,MAX(status) OVER (PARTITION BY gupid) AS max_status
+    FROM jmh_sql_test.sub_index_test sit FORCE INDEX (idx_t1)
+    WHERE  createtime >= '2022-06-17 01:00:00' AND createtime <= '2023-12-17 01:00:00'
+) AS subquery
+WHERE status = max_status;

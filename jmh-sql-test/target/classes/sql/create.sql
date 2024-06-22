@@ -1,49 +1,37 @@
--- INDEX 
-CREATE INDEX idx_t1 ON jmh_sql_test.sub_index_test  (createtime, gupid, delete_flag);
-DROP INDEX idx_t1  ON jmh_sql_test.sub_index_test;
-
-SHOW INDEX FROM jmh_sql_test.sub_index_test;
-
--- -- 測試INDEX
-EXPLAIN
-SELECT gupid
-    FROM jmh_sql_test.sub_index_test sit
-    WHERE createtime >= '2023-06-17 01:00:00'  
-    AND gupid = 'group2' 
-    AND delete_flag = false;
-
--- -- 測試INDEX(因*導致索引失效, 也可是因為選到沒有的非複合索引的欄位)
-EXPLAIN
-SELECT *
-    FROM jmh_sql_test.sub_index_test sit
-    WHERE createtime >= '2023-06-17 01:00:00'  
-    AND gupid = 'group2' 
-    AND delete_flag = false;
-    
-    
-
--- SEARCH
--- 沒有使用INDEX
-EXPLAIN
-SELECT COUNT(*) FROM (
-    SELECT creator,status, MAX(status) OVER (PARTITION BY gupid) AS max_status
-    FROM jmh_sql_test.sub_index_test sit
-    WHERE gupid = 'group2' 
-    AND createtime >= '2023-06-17 01:00:00' AND createtime <= '2023-12-17 01:00:00'
-    AND delete_flag = false
-) AS subquery
-WHERE status = max_status;
+CREATE DATABASE IF NOT EXISTS jmh_sql_test;
 
 
--- 有使用INDEX
-EXPLAIN
-SELECT COUNT(*) FROM (
-    SELECT gupid, status ,MAX(status) OVER (PARTITION BY gupid) AS max_status
-    FROM jmh_sql_test.sub_index_test sit FORCE INDEX (idx_t1)
-    WHERE gupid = 'group2' 
-    AND createtime >= '2023-06-17 01:00:00' AND createtime <= '2023-12-17 01:00:00'
-    AND delete_flag = false
-) AS subquery
-WHERE status = max_status;
+CREATE TABLE IF NOT EXISTS jmh_sql_test.sub_index_test (
+  `oid` CHAR(36) NOT NULL COMMENT 'UUID',
+  `status` INT(11) DEFAULT NULL COMMENT '每個群組ID都有不同狀態',
+  `gupid` VARCHAR(20) DEFAULT NULL COMMENT '群組ID',
+  `delete_flag` BOOLEAN COMMENT '是否刪除',
+  `creator` VARCHAR(255) DEFAULT NULL COMMENT '創建者',
+  `createtime` TIMESTAMP DEFAULT NULL,
+  `comment` VARCHAR(255) DEFAULT NULL,
+  PRIMARY KEY (`oid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
+USE jmh_sql_test;
+
+DELIMITER //
+
+CREATE PROCEDURE IF NOT EXISTS increase_12000()
+BEGIN
+    DECLARE i INT DEFAULT 0;
+    WHILE i < 12000 DO
+        INSERT INTO sub_index_test (`oid`, `status`, `gupid`, `delete_flag`, `creator`, `createtime`, `comment`)
+        VALUES
+        (UUID(),
+            FLOOR(RAND() * 8),
+            CONCAT('group', FLOOR(RAND() * 21)),
+            IF(RAND() < 0.5, 0, 1),
+            CONCAT('creator', FLOOR(RAND() * 8) + 1),
+            FROM_UNIXTIME(UNIX_TIMESTAMP('2022-01-01 00:00:00') + FLOOR(RAND() * (UNIX_TIMESTAMP('2024-12-31 23:59:59') - UNIX_TIMESTAMP('2022-01-01 00:00:00')))),
+            '');
+        SET i = i + 1;
+    END WHILE;
+END //
+
+DELIMITER ;

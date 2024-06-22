@@ -1,13 +1,8 @@
 USE jmh_sql_test;
 
+CALL increase_12000();
 
--- 先CALL 3000筆測試
-CALL increase_1000();
+SELECT COUNT(*) FROM jmh_sql_test.sub_index_test ;
 
-
-SELECT COUNT(*) FROM jmh_sql_test.sub_index_test sit ;
-
--- CALL 100000筆測試
-CALL increase_100000();
-
-SELECT COUNT(*) FROM jmh_sql_test.sub_index_test sit ;
+-- 創建沒有index的表
+CREATE TABLE jmh_sql_test.no_index_test AS SELECT * FROM sub_index_test;

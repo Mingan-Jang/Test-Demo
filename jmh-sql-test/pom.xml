@@ -54,6 +54,13 @@
 			<artifactId>HikariCP</artifactId>
 			<version>5.1.0</version>
 		</dependency>
+		<!-- Cancel slf4j for HikariCP-->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-nop</artifactId>
+			<version>1.7.32</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

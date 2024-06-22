@@ -3,5 +3,11 @@ dontinline,*.*_avgt_jmhStub
 dontinline,*.*_sample_jmhStub
 dontinline,*.*_ss_jmhStub
 dontinline,*.*_thrpt_jmhStub
-inline,com/baeldung/BenchMark.testSQLQueryWithForceIndex
-inline,com/baeldung/BenchMark.testSQLQueryWithoutForceIndex
+inline,com/baeldung/BenchMark.testAllFieldsUsinWhere_G3
+inline,com/baeldung/BenchMark.testAllFieldsUsingIndex_G3
+inline,com/baeldung/BenchMark.testIndexlFieldsUsingIndex_G1
+inline,com/baeldung/BenchMark.testIndexlFieldsUsingPartialIndex_G2
+inline,com/baeldung/BenchMark.testIndexlFieldsUsingWhere_G1
+inline,com/baeldung/BenchMark.testIndexlFieldsUsingWhere_G2
+inline,com/baeldung/BenchmarkState.setup
+inline,com/baeldung/BenchmarkState.tearDown
