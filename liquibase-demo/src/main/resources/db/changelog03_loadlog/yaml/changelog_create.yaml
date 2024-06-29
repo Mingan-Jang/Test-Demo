@@ -1,15 +1,15 @@
 databaseChangeLog:
   - changeSet:
-      id: "2_1"
-      author: "jjk"
+      id: "3_2"
+      author: jjk
       preConditions:
         - onFail: MARK_RAN
         - not:
             - tableExists:
-                tableName: create2_table
+                tableName: create_table_by_another_log
       changes:
         - createTable:
-            tableName: create2_table
+            tableName: create_table_by_another_log
             columns:
               - column:
                   name: id

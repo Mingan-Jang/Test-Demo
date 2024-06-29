@@ -1,12 +1,13 @@
 databaseChangeLog:
   - changeSet:
-      id: 2
-      author: pratik
+      id: "3_1"
+      author: jjk
       
   - include:
-      file: yaml/create.yaml
+      file: yaml/changelog_create.yaml
       relativeToChangelogFile: true
 
   - include:
-      file: sql/sqlfake/insert.sql
+      file: sql/changelog_insert.sql
       relativeToChangelogFile: true
+      

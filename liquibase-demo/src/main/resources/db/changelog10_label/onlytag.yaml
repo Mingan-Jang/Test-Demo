@@ -1,0 +1,162 @@
+databaseChangeLog:
+  - changeSet:
+      id: "10_Only_1_Drop"
+      labels: 'onlyU'
+      author: jjk
+      runAlways: true
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: onlyU
+      changes:
+            - dropTable:
+               tableName: onlyU
+
+  - changeSet:
+      id: '10_Only_1'
+      author: jjk
+      labels: 'onlyU'
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - tableExists:
+                tableName: onlyU
+      changes:
+        - createTable:
+            tableName: onlyU
+            columns:
+              - column:
+                  name: firstname
+                  type: varchar(255)
+               
+  - changeSet:
+      id: "10_Only_2_Drop"
+      labels: ''
+      author: jjk
+      runAlways: true
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: onlyU_noLabelTable
+      changes:
+            - dropTable:
+               tableName: onlyU_noLabelTable
+               
+  - changeSet:
+      id: '10_Only_2'
+      author: jjk
+      labels: ''
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - tableExists:
+                tableName: onlyU_noLabelTable
+      changes:
+        - createTable:
+            tableName: onlyU_noLabelTable
+            columns:
+              - column:
+                  name: firstname
+                  type: varchar(255)
+               
+  - changeSet:
+      id: "10_Only_3_Drop"
+      labels: 'onlyU,onlyU2'
+      author: jjk
+      runAlways: true
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: onlyU_And_onlyU2
+      changes:
+            - dropTable:
+               tableName: onlyU_And_onlyU2
+               
+  - changeSet:
+      id: '10_Only_3'
+      author: jjk
+      labels: 'onlyU,onlyU2'
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - tableExists:
+                tableName: onlyU_And_onlyU2
+      changes:
+        - createTable:
+            tableName: onlyU_And_onlyU2
+            columns:
+              - column:
+                  name: firstname
+                  type: varchar(255)
+          
+                  
+#  - changeSet:
+#      id: '10_Only_5'
+#      author: jjk
+#      labels: '@onlyU'
+#      changes:
+#        - insert:
+#            tableName: onlyu
+#            columns:
+#              - column:
+#                  name: firstname
+#                  value: '4_2_Only'
+#              - column:
+#                  name: type
+#                  value: ''
+#              - column:
+#                  name: version
+#                  value: ''
+#              - column:
+#                  name: special_label
+#                  value: '@onlyU'
+#              - column:
+#                  name: desp
+#                  value: 'id=4_5 , with only @onlyU tag'
+#                  
+#  - changeSet:
+#      id: '10_Only_6'
+#      author: jjk
+#      labels: 'onlyU'
+#      changes:
+#        - insert:
+#            tableName: onlyu
+#            columns:
+#              - column:
+#                  name: firstname
+#                  value: '4_3_Only'
+#              - column:
+#                  name: type
+#                  value: ''
+#              - column:
+#                  name: version
+#                  value: ''
+#              - column:
+#                  name: special_label
+#                  value: 'onlyU'
+#              - column:
+#                  name: desp
+#                  value: ''
+#                  
+#  - changeSet:
+#      id: '10_Only_7'
+#      author: jjk
+#      changes:
+#        - insert:
+#            tableName: onlyu
+#            columns:
+#              - column:
+#                  name: firstname
+#                  value: '4_4_Only'
+#              - column:
+#                  name: type
+#                  value: ''
+#              - column:
+#                  name: version
+#                  value: ''
+#              - column:
+#                  name: special_label
+#                  value: ''
+#              - column:
+#                  name: desp
+#                  value: 'no label'

@@ -1,0 +1,69 @@
+databaseChangeLog:
+  - changeSet:
+      id: "6_1"
+      author: jjk
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - tableExists:
+                tableName: validsum
+      changes:
+        - createTable:
+            tableName: validsum
+            columns:
+              - column:
+                  name: validid
+                  type: int
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: validname
+                  type: varchar(100)
+
+  - changeSet:
+      id: "6_2"
+      author: jjk
+      changes:
+        - insert:
+            tableName: validsum
+            columns:
+              - column:
+                  name: validid
+                  value: 1
+              - column:
+                  name: validname
+                  value: "this data is shown"
+                  
+                  
+  - changeSet:
+      id: "6_3"
+      author: jjk
+      validCheckSum: 9:334f665830d091e59bb42e980b99863c
+#      validCheckSum: 9:334f665830d091e59bb42e980b99863c or 9:5995f05ff26d5904a9531e0ba5393433
+      changes:
+        - insert:
+            tableName: validsum
+            columns:
+              - column:
+                  name: validid
+                  value: 2
+              - column:
+                  name: validname
+#                  value: "modify the validname column and retry again"
+                  value: "new"
+                  
+                  
+  - changeSet:
+      id: "6_4"
+      author: jjk
+      changes:
+        - insert:
+            tableName: validsum
+            columns:
+              - column:
+                  name: validid
+                  value: 3
+              - column:
+                  name: validname
+#                  value: "modify the validname column and set MD5SUM null in DATABASELOG"
+                  value: "new"

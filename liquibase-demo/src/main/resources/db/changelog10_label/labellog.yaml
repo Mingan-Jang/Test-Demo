@@ -1,37 +1,24 @@
 databaseChangeLog:
 
   - changeSet:
-      id: "4_0_2"
+      id: "10_1"
       author: jjk
-      runOnChange: true
+      runAlways: true
       preConditions:
         - onFail: MARK_RAN
         - tableExists:
-            tableName: person
+            tableName: labelTable
       changes:
             - dropTable:
-               tableName: person
-
-  - changeSet:
-      id: "4_0_3"
-      author: jjk
-      runOnChange: true
-      preConditions:
-        - onFail: MARK_RAN
-        - tableExists:
-            tableName: no_label
-      changes:
-            - dropTable:
-               tableName: no_label
-
+               tableName: labelTable
             
   - changeSet:
-      id: '4_1'
+      id: '10_3'
       author: jjk
       runAlways: true
       changes:
         - createTable:
-            tableName: person
+            tableName: labelTable
             columns:
               - column:
                   name: firstname
@@ -46,13 +33,13 @@ databaseChangeLog:
                   name: desp
                   type: varchar(255)
   - changeSet:
-      id: '4_2'
+      id: '10_4'
       author: jjk
-      runAlways: true
       labels: 'v.1.0,dev'
+      runAlways: true
       changes:
         - insert:
-            tableName: person
+            tableName: labelTable
             columns:
               - column:
                   name: firstname
@@ -67,13 +54,13 @@ databaseChangeLog:
                   name: desp
                   value: id=4_2
   - changeSet:
-      id: '4_3'
+      id: '10_5'
       author: jjk
-      runAlways: true
       labels: 'v.2.0,dev'
+      runAlways: true
       changes:
         - insert:
-            tableName: person
+            tableName: labelTable
             columns:
               - column:
                   name: firstname
@@ -88,13 +75,13 @@ databaseChangeLog:
                   name: desp
                   value: 'id=4_3'
   - changeSet:
-      id: '4_4'
+      id: '10_6'
       author: jjk
-      runAlways: true
       labels: 'test,v.2.0'
+      runAlways: true
       changes:
         - insert:
-            tableName: person
+            tableName: labelTable
             columns:
               - column:
                   name: firstname
@@ -108,77 +95,27 @@ databaseChangeLog:
               - column:
                   name: desp
                   value: 'id=4_4'
+                  
+                  
   - changeSet:
-      id: '4_5'
+      id: '10_7'
       author: jjk
+      labels: ''
       runAlways: true
-      labels: '@onlyU'
       changes:
         - insert:
-            tableName: person
+            tableName: labelTable
             columns:
               - column:
                   name: firstname
-                  value: 'onlyU2'
+                  value: 'Meow4'
               - column:
                   name: type
-                  value: ''
+                  value: 'no label'
               - column:
                   name: version
                   value: ''
               - column:
                   name: desp
-                  value: 'id=4_5 , with only @onlyU tag'
+                  value: 'no label'
 
-  - changeSet:
-      id: '4_6'
-      author: jjk
-      runAlways: true
-      labels: 'onlyU'
-      changes:
-        - insert:
-            tableName: person
-            columns:
-              - column:
-                  name: firstname
-                  value: 'onlyU'
-              - column:
-                  name: type
-                  value: ''
-              - column:
-                  name: version
-                  value: ''
-              - column:
-                  name: desp
-                  value: 'id=4_6 , with only onlyU tag'
-                  
-  - changeSet:
-      id: '4_7'
-      author: jjk
-      runAlways: true
-      labels: 'isMember'
-      changes:
-        - addColumn:
-            tableName: person
-            columns:
-              - column:
-                  name: isMember
-                  type: boolean
-                  
-                  
-  - changeSet:
-      id: '4_8'
-      author: jjk
-      runAlways: true
-      preConditions:
-        - onFail: MARK_RAN
-        - not:
-            - tableExists:
-                tableName: no_label
-      changes:
-        - createTable:
-            tableName: no_label
-            columns:
-              - column:
-                  name: no_label_col
-                  type: varchar(255)
