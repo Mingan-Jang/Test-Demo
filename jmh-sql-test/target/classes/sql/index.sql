@@ -2,11 +2,7 @@
 CREATE INDEX idx_t1 ON jmh_sql_test.sub_index_test  (createtime, gupid, delete_flag);
 DROP INDEX idx_t1  ON jmh_sql_test.sub_index_test;
 
-
-
 SHOW INDEX FROM jmh_sql_test.sub_index_test;
-
-
 
 -- -- 測試INDEX
 EXPLAIN
@@ -27,9 +23,8 @@ SELECT *
     
 
 -- SEARCH
-
 -- 對照組一
--- 不使用INDEX，查詢無索引欄位，不符合最左匹配原則
+-- 不使用INDEX，索引失效(查詢無索引欄位creator)，WHERE條件符合最左匹配原則(覆蓋到全部索引)
 EXPLAIN
 SELECT COUNT(*) FROM (
     SELECT creator,status, MAX(status) OVER (PARTITION BY gupid) AS max_status
@@ -41,7 +36,7 @@ SELECT COUNT(*) FROM (
 WHERE status = max_status;
 
 
--- 強制使用INDEX，查詢有索引欄位，WHERE條件符合最左匹配原則，因為覆蓋到全部索引
+-- 強制使用INDEX，索引有效，WHERE條件符合最左匹配原則(覆蓋到全部索引)
 EXPLAIN
 SELECT COUNT(*) FROM (
     SELECT gupid, status ,MAX(status) OVER (PARTITION BY gupid) AS max_status
@@ -53,7 +48,7 @@ SELECT COUNT(*) FROM (
 WHERE status = max_status;
 
 -- 對照組二
--- 強制使用INDEX，查詢有索引欄位，WHERE條件符合最左匹配原則，因為覆蓋到第一個索引
+-- 強制使用INDEX，查詢有索引欄位，WHERE條件符合最左匹配原則(覆蓋到部分索引)
 EXPLAIN
 SELECT COUNT(*) FROM (
     SELECT gupid, status ,MAX(status) OVER (PARTITION BY gupid) AS max_status
@@ -63,7 +58,7 @@ SELECT COUNT(*) FROM (
 WHERE status = max_status;
 
 
--- 不使用INDEX，查詢有索引欄位
+-- 不使用INDEX，查詢有索引欄位，WHERE條件符合最左匹配原則(覆蓋到部分索引)
 EXPLAIN
 SELECT COUNT(*) FROM (
     SELECT gupid, status ,MAX(status) OVER (PARTITION BY gupid) AS max_status
@@ -75,7 +70,7 @@ WHERE status = max_status;
 
 
 -- 對照組三
--- 不使用INDEX，查詢所有欄位，WHERE條件符合最左匹配原則
+-- 不使用INDEX，查詢所有欄位，WHERE條件符合最左匹配原則(覆蓋到部分索引)
 EXPLAIN
 SELECT COUNT(*) FROM (
     SELECT * ,MAX(status) OVER (PARTITION BY gupid) AS max_status
@@ -84,7 +79,7 @@ SELECT COUNT(*) FROM (
 ) AS subquery
 WHERE status = max_status;
 
--- 強制使用INDEX，查詢所有欄位，WHERE條件符合最左匹配原則
+-- 強制使用INDEX，查詢所有欄位，WHERE條件符合最左匹配原則(覆蓋到部分索引)
 EXPLAIN
 SELECT COUNT(*) FROM (
     SELECT * ,MAX(status) OVER (PARTITION BY gupid) AS max_status
