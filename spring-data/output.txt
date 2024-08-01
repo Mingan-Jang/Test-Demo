@@ -1,0 +1,4 @@
+Line 1278: 2024-05-24 08:19:22 [gov.vghpt.ss.log.aop.ControllerAspect]-[INFO] Enter: gov.vghpt.ss.controller.sched.SsDdtController.querySectList() with argument[s] = [{"hid":null,"casetp":"OEA","shdate":null,"room":"0","sDate":"2024-05-27","eDate":"2024-05-27","deptdetails":[],"shdepts":["NM"]}]
+Total count for ScheOrderDAOImpl.getCycleReqno: 1484
+Line 7633: 2024-05-24 09:29:16 [gov.vghpt.ss.log.aop.ControllerAspect]-[INFO] Enter: gov.vghpt.ss.controller.sched.SsDdtController.querySectList() with argument[s] = [{"hid":null,"casetp":"OEA","shdate":null,"room":"0","sDate":"2024-05-27","eDate":"2024-05-27","deptdetails":[],"shdepts":["NM"]}]
+Total count for ScheOrderDAOImpl.getCycleReqno: 459
