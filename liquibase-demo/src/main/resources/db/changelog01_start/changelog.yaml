@@ -1,0 +1,22 @@
+
+# Test with change each field
+databaseChangeLog:
+  - changeSet:
+      id: "1_1"
+      author: jjk
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+           - tableExists:
+                tableName: helloworld
+      changes:
+        - createTable:
+            tableName: helloworld
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false

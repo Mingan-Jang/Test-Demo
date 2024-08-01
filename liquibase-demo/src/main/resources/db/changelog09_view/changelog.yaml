@@ -1,0 +1,105 @@
+databaseChangeLog:
+  - changeSet:
+      id: "9_1"
+      author: jjk
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+           - tableExists:
+                tableName: main_table
+      changes:
+        - createTable:
+            tableName: main_table
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: category
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: map_id
+                  type: int
+                  constraints:
+                    nullable: false
+       
+  - changeSet:
+      id: "9_2"
+      author: jjk
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+           - tableExists:
+                tableName: map_table
+      changes:
+        - createTable:
+            tableName: map_table
+            columns:
+              - column:
+                  name: map_id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: category
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    
+  - changeSet:
+      id: "9_3"
+      author: jjk
+      preConditions:
+        - onFail: CONTINUE
+        - sqlCheck:
+            sql: SELECT COUNT(*) FROM main_table
+            expectedResult: 0
+      changes:
+        - sqlFile:
+            path: sql/insertdata_maintable.sql
+            encoding: UTF-8
+            relativeToChangelogFile: true
+            endDelimiter: ;
+            stripComments: true
+                    
+                    
+  - changeSet:
+      id: "9_4"
+      author: jjk
+      preConditions:
+        - onFail: CONTINUE
+        - sqlCheck:
+            sql: SELECT COUNT(*) FROM map_table
+            expectedResult: 0
+      changes:
+        - sqlFile:
+            path: sql/insertdata_maptable.sql
+            encoding: UTF-8
+            relativeToChangelogFile: true
+            endDelimiter: ;
+            stripComments: true
+
+
+  - changeSet:
+      id: "9_5"
+      author: jjk
+      preConditions:
+        - onFail: CONTINUE
+        - not:
+            - viewExists:
+                viewName: myview
+      changes:
+        - sqlFile:
+            path: sql/createview.sql
+            encoding: UTF-8
+            relativeToChangelogFile: true
+            endDelimiter: ;
+            stripComments: true

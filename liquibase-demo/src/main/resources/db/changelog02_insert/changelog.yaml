@@ -1,0 +1,39 @@
+
+# Testing Changes in insertdata_helloworld.sql. 
+# Q. Why does Liquibase report an error?
+# S. Liquibase reports an error when there are changes made to insertdata_helloworld.sql 
+# because it calculates a checksum (MD5 hash) for each change set, including SQL files. 
+# Any alteration to insertdata_helloworld.sql, such as modifications to SQL statements 
+# or schema structure, results in a change to its checksum. Liquibase detects 
+# this discrepancy and flags it as an error to maintain the consistency 
+# and integrity of applied changes.
+
+
+# Handling Duplicate Data Insertion with Primary Key (id)
+# Q. Why doesn't Liquibase report an error upon Spring restart?
+
+# Sol Beacuse checksum has been changed due to change of SQL file
+
+# (2) Since id is the key, we cannot insert data twice. 
+# Why won't liquibase report error when spring restart 
+# 
+# When the Spring application restarts without any changes, 
+# Liquibase verifies the MD5 value of previously applied change sets. 
+# If the MD5 value remains unchanged, Liquibase recognizes that the 
+# change set has already been successfully applied. Consequently, Liquibase does 
+# not reapply the change set, ensuring that only necessary 
+# and valid database modifications are executed.
+
+databaseChangeLog:
+  - changeSet:
+      id: "2_1"
+      author: jjk
+      changes:
+       - sqlFile:
+            path: sql/insertdata_helloworld.sql
+            encoding: UTF-8
+            relativeToChangelogFile: true
+            endDelimiter: ;
+            stripComments: true
+
+            

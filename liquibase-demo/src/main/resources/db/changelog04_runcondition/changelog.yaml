@@ -1,0 +1,56 @@
+databaseChangeLog:
+  - changeSet:
+      id: "4_1"
+      author: jjk
+      changes:
+        - createTable:
+            tableName: runTest
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: username
+                  type: varchar(50)
+
+# After the initial run, you can test by commenting out "runAlways: true".
+# This will prevent the operation 4_2 from being executed again.
+  - changeSet:
+      id: "4_2"
+      author: jjk
+#      runAlways: true
+      preConditions:
+        # onFail不會參與到MD5計算
+        - onFail: MARK_RAN # 假如sqlCheck條件不符合，預設行為是標記(MARK_RAN) 並跳過此changelog
+        - sqlCheck:
+            sql: SELECT COUNT(*) FROM runTest
+            expectedResult: 0 
+      changes:
+        - sql:
+            sql: INSERT INTO runTest (id, username) VALUES (1, 'user1'), (2, 'user2');
+
+# After the initial run, comment out "columnName: email" and uncomment "columnName: www" in the preConditions section.
+# This will cause the change set "4_3" to change from EXECUTED to RERAN 
+# due to the runOnChange setting being true.
+  - changeSet:
+      id: "4_3"
+      author: jjk
+      runOnChange: true
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+           - columnExists:
+              tableName: email
+              columnName: www
+#              columnName: www
+
+      changes:
+        - addColumn:
+            tableName: runTest
+            columns:
+              - column:
+                  name: email
+#                  name: www
+                  type: varchar(50)

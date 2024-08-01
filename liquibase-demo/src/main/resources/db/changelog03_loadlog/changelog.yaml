@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: "3_1"
+      author: jjk
+      
+  - include:
+      file: yaml/changelog_create.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: sql/changelog_insert.sql
+      relativeToChangelogFile: true
+      

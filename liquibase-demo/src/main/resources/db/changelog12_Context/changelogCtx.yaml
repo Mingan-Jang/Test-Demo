@@ -1,0 +1,63 @@
+databaseChangeLog:
+  - changeSet:
+      id: "5_0_0"
+      author: jjk
+      context: uat
+      runAlways: true
+      changes:
+        - dropTable:
+            tableName: uat_data
+            cascadeConstraints: true
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: uat_data
+
+  - changeSet:
+      id: "5_0_1"
+      author: jjk
+      context: uat
+      runAlways: true
+      changes:
+        - createTable:
+            tableName: uat_data
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(255)
+
+  - changeSet:
+      id: "5_0_2"
+      author: jjk
+      context: uat
+      runAlways: true
+      changes:
+        - insert:
+            tableName: uat_data
+            columns:
+              - column:
+                  name: id
+                  value: 1
+              - column:
+                  name: name
+                  value: "Uat Data"
+  - changeSet:
+      id: "5_0_3"
+      author: jjk
+      context: test
+      runAlways: true
+      changes:
+        - insert:
+            tableName: uat_data
+            columns:
+              - column:
+                  name: id
+                  value: 2
+              - column:
+                  name: name
+                  value: "Test Data 2"
