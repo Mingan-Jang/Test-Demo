@@ -1,2 +1,18 @@
-*.geokey
+# API keys
+*.apikey
+
+# Code workspace settings
 workspace.code-workspace
+
+# Maven target directory
+target/
+
+# Eclipse specific files
+*.classpath
+*.project
+*.settings/
+
+# IntelliJ IDEA specific files
+.idea/
+*.iml
+*.iws

@@ -1,0 +1,28 @@
+spring:
+  jpa:
+    open-in-view: true
+    properties:
+      hibernate:
+        jdbc:
+          fetch-size: 1000
+          batch-size: 500
+          batch-versioned-data: true
+          order-inserts: true
+          order-updates: true
+        generate_statistics: false
+      cache:
+        use_query_cache: false
+        use_second_level_cache: false
+    
+  datasource:
+    url: jdbc:mariadb://192.168.54.195:3306/irail_dev
+    username: irail_dev
+    password: IRail@dev
+    driver-class-name: org.mariadb.jdbc.Driver
+    
+mapping: 
+  prop: column_mapping.properties
+
+report:
+  setting: 
+    firstrow: 1

@@ -7,7 +7,7 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-07-02T21:30:06+0800",
+    date = "2024-07-18T09:32:25+0800",
     comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.35.0.v20230814-2020, environment: Java 17.0.11 (Eclipse Adoptium)"
 )
 public class CompositeMapperImpl implements CompositeMapper {
