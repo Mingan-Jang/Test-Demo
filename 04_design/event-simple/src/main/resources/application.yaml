@@ -1,0 +1,53 @@
+#       可以適當小一些（例如 5~10）
+
+spring:
+  datasource:
+    primary:
+      jdbc-url: jdbc:postgresql://localhost:5432/mydb
+      username: test
+      password: 123456
+      driver-class-name: org.postgresql.Driver
+      hikari:
+        maximum-pool-size: 10
+        minimum-idle: 2
+        idle-timeout: 600000
+        max-lifetime: 1800000
+        pool-name: PrimaryHikariCP
+
+    clickhouse:
+      jdbc-url: jdbc:clickhouse://localhost:8123/default
+      username: test
+      #      ClickHouse 是 OLAP 資料庫，通常查詢都是大表掃描，連線不會像 OLTP 那麼頻繁，因此連線池可小
+      password: 123456
+      driver-class-name: com.clickhouse.jdbc.ClickHouseDriver
+      hikari:
+        maximum-pool-size: 5
+        minimum-idle: 1
+        idle-timeout: 600000
+        max-lifetime: 1800000
+        pool-name: SecondaryHikariCP
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: test
+    password: 123456
+    publisher-returns: true
+    publisher-confirm-type: correlated
+    template:
+      mandatory: true
+    listener:
+      simple:
+        acknowledge-mode: manual
+        prefetch: 1
+        retry:
+          enabled: false
+
+logging:
+  level:
+    com.fasterxml.jackson.databind: DEBUG

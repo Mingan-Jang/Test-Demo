@@ -1,0 +1,53 @@
+networks:
+  event-demo:
+    driver: bridge
+
+volumes:
+  pg_data:
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: pg_case_insensitive
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: mydb
+      TZ: "Asia/Taipei"
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - event-demo
+    restart: unless-stopped
+
+  rabbitmq:
+    build:
+      context: ./docker/rabbitmq
+    container_name: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: test
+      RABBITMQ_DEFAULT_PASS: 123456
+    ports:
+      - "15672:15672" # RabbitMQ 管理界面
+      - "5672:5672" # AMQP port
+    networks:
+      - event-demo
+    restart: unless-stopped
+  clickhouse:
+    image: clickhouse/clickhouse-server:25.9.3.48
+    container_name: clickhouse_container
+    environment:
+      CLICKHOUSE_USER: test
+      CLICKHOUSE_PASSWORD: 123456
+      CLICKHOUSE_DB: default
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+    networks:
+      - event-demo
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
