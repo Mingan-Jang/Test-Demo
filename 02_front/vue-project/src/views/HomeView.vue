@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { getAllUsers, getUserById, createUser, deleteUser } from '../api/userApi'
+import JiebaDemo from '../component/JiebaDemo.vue'
 import type { User } from '../types/user'
 
 const users = ref<User[]>([])
@@ -81,5 +82,8 @@ onMounted(() => {
         </button>
       </li>
     </ul>
+    
+    <!-- jieba demo -->
+    <JiebaDemo />
   </div>
 </template>

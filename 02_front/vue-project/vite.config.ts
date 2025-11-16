@@ -15,4 +15,16 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     },
   },
+  // WASM 支援配置
+  build: {
+    rollupOptions: {
+      output: {
+        inlineDynamicImports: false,
+      },
+    },
+  },
+  optimizeDeps: {
+    include: ['jieba-wasm'],
+  },
+  assetsInclude: ['**/*.wasm'],
 })
