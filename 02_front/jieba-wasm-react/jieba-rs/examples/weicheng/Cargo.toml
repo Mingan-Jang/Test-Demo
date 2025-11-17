@@ -1,0 +1,11 @@
+[package]
+name = "weicheng"
+version = "0.1.0"
+authors = ["messense <messense@icloud.com>"]
+edition = "2021"
+
+[dependencies]
+jieba-rs = { path = "../.." }
+
+[target.'cfg(unix)'.dependencies]
+jemallocator = "0.5.0"

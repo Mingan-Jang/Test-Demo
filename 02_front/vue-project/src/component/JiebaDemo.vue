@@ -16,7 +16,11 @@
     <div v-if="tokens && tokens.length > 0">
       <h3 class="font-medium mb-2">✅ 解析結果（{{ tokens.length }} 個詞）：</h3>
       <div class="flex flex-wrap gap-2 mb-4">
-        <span v-for="(t, i) in tokens" :key="i" class="px-2 py-1 bg-blue-50 border border-blue-200 rounded">
+        <span
+          v-for="(t, i) in tokens"
+          :key="i"
+          class="px-2 py-1 bg-blue-50 border border-blue-200 rounded"
+        >
           {{ t }}
         </span>
       </div>
@@ -29,6 +33,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import load from 'jieba-wasm'
 
 const defaultText = `SQL，全名為 Structured Query Language，是一種專門用來管理與操作關聯式資料庫（Relational Database）的語言。自從 1970 年代由 IBM 研究員提出關聯式模型後，SQL 迅速成為資料庫的標準語言，並被廣泛使用於企業系統、金融、醫療、政府資料平台、Web 應用與資料分析領域。幾乎所有常見的資料庫系統，例如 MySQL、PostgreSQL、Oracle、SQL Server、DB2，都支援 SQL 語法，並依需求進行延伸。
 
@@ -38,16 +43,16 @@ const text = ref<string>(defaultText)
 const tokens = ref<string[] | null>(null)
 const loading = ref(false)
 const error = ref<string | null>(null)
-let cutFn: ((text: string, precise?: boolean) => string[]) | null = null
 
 onMounted(async () => {
   loading.value = true
   try {
     console.log('開始載入 jieba-wasm (web 版本)...')
-    
-    // 明確導入 web 版本
-    const { cut } = await import('jieba-wasm/web')
-    cutFn = cut
+    await load('/jieba_rs_wasm_bg.wasm')
+
+    // await init()
+    // cut('中华人民共和国武汉市长江大桥', true)
+
     console.log('✅ jieba-wasm 載入成功')
   } catch (e) {
     console.error('❌ jieba-wasm 載入失敗', e)
@@ -64,22 +69,6 @@ function parse() {
     error.value = '請輸入文字後再解析'
     return
   }
-
-  if (!cutFn) {
-    error.value = 'jieba-wasm 尚未載入，無法分詞'
-    return
-  }
-
-  try {
-    console.log('開始分詞...')
-    // 使用 cut() 進行分詞，第二個參數 true 表示精確分詞
-    const result = cutFn(text.value, true)
-    console.log('📝 分詞結果:', result)
-    tokens.value = result
-  } catch (e) {
-    console.error('分詞錯誤:', e)
-    error.value = `分詞失敗: ${(e as Error).message}`
-  }
 }
 
 function reset() {
@@ -87,8 +76,6 @@ function reset() {
   tokens.value = null
   error.value = null
 }
-</script>
-</script>
 </script>
 
 <style scoped>
