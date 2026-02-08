@@ -10,14 +10,14 @@ import (
 )
 
 func TestHealth(t *testing.T) {
-	// ?�建測試上�???
+	// 建立測試上下文
 	w := httptest.NewRecorder()
 	c, _ := gin.CreateTestContext(w)
 
-	// 調用 Health ?��???
+	// 調用 Health 處理器
 	Health(c)
 
-	// 驗�??�?�碼
+	// 驗證狀態碼
 	assert.Equal(t, http.StatusOK, w.Code)
 	assert.Contains(t, w.Body.String(), "ok")
 }

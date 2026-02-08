@@ -1,16 +1,16 @@
 ﻿package app
 
 import (
-"go-backend/internal/domain"
-"go-backend/internal/handler"
-"go-backend/internal/middleware"
-"go-backend/internal/repository"
-"go-backend/internal/service"
+	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	"gorm.io/gorm"
 
-"github.com/gin-gonic/gin"
-swaggerFiles "github.com/swaggo/files"
-ginSwagger "github.com/swaggo/gin-swagger"
-"gorm.io/gorm"
+	"go-backend/internal/domain"
+	"go-backend/internal/handler"
+	"go-backend/internal/middleware"
+	"go-backend/internal/repository"
+	"go-backend/internal/service"
 )
 
 // App 应用结构体
@@ -108,4 +108,8 @@ return a.DB.AutoMigrate(
 // Run 运行应用
 func (a *App) Run(addr string) error {
 return a.Engine.Run(addr)
+}
+// GetDB 获取数据库实例
+func (a *App) GetDB() *gorm.DB {
+	return a.DB
 }

@@ -6,22 +6,12 @@ import (
 )
 
 func main() {
-
 	application, err := app.Initialize()
 	if err != nil {
+		panic(err)
 	}
 
 	db := application.GetDB()
-
-	var tables []string
-	result := db.Raw(`
-		SELECT table_name
-		FROM information_schema.tables
-		WHERE table_schema = 'sys'
-	`).Scan(&tables)
-
-	if result.Error != nil {
-	}
 
 	models := []interface{}{
 		&domain.HolidayOperator{},
@@ -32,8 +22,7 @@ func main() {
 
 	for _, model := range models {
 		if err := db.AutoMigrate(model); err != nil {
-		} else {
+			panic(err)
 		}
 	}
-
 }
