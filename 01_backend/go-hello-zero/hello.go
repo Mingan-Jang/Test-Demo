@@ -7,9 +7,9 @@ import (
 	"flag"
 	"fmt"
 
-	"go-zero/internal/config"
-	"go-zero/internal/handler"
-	"go-zero/internal/svc"
+	"go-hello-zero/internal/config"
+	"go-hello-zero/internal/handler"
+	"go-hello-zero/internal/svc"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/rest"

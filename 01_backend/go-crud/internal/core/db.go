@@ -1,4 +1,4 @@
-package core
+﻿package core
 
 import (
 	"database/sql"
@@ -37,4 +37,6 @@ func (d *DB) GetConn() *sql.DB {
 func (d *DB) Close() error {
 	return d.conn.Close()
 }
+
+
 

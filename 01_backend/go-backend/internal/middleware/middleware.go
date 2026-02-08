@@ -1,35 +1,29 @@
-package middleware
+ï»¿package middleware
 
 import (
-	"github.com/gin-gonic/gin"
+"github.com/gin-gonic/gin"
 )
 
-// CORS è·¨å?ä¸­é?ä»?
+// CORS è·¨åŸŸä¸­é—´ä»¶
 func CORS() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
-		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
-		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT, DELETE")
+return func(c *gin.Context) {
+c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT, DELETE")
 
-		if c.Request.Method == "OPTIONS" {
-			c.AbortWithStatus(204)
-			return
-		}
-
-		c.Next()
-	}
+if c.Request.Method == "OPTIONS" {
+c.AbortWithStatus(204)
+return
 }
 
-// ErrorHandler ?¯èª¤?•ç?ä¸­é?ä»?
+c.Next()
+}
+}
+
+// ErrorHandler é”™è¯¯å¤„ç†ä¸­é—´ä»¶
 func ErrorHandler() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		c.Next()
-		if len(c.Errors) > 0 {
-			for range c.Errors {
-				// è¨˜é??¯èª¤
-				// logger.Error(err.Error())
-			}
-		}
-	}
+return func(c *gin.Context) {
+c.Next()
+}
 }

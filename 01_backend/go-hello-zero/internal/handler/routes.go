@@ -6,10 +6,10 @@ package handler
 import (
 	"net/http"
 
-	article "go-zero/internal/handler/article"
-	focus "go-zero/internal/handler/focus"
-	user "go-zero/internal/handler/user"
-	"go-zero/internal/svc"
+	article "go-hello-zero/internal/handler/article"
+	focus "go-hello-zero/internal/handler/focus"
+	user "go-hello-zero/internal/handler/user"
+	"go-hello-zero/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
 )

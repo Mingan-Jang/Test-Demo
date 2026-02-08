@@ -1,4 +1,4 @@
-// Code scaffolded by goctl. Safe to edit.
+﻿// Code scaffolded by goctl. Safe to edit.
 // goctl 1.9.2
 
 package focus
@@ -7,9 +7,9 @@ import (
 	"net/http"
 
 	"github.com/zeromicro/go-zero/rest/httpx"
-	"go-zero/internal/logic/focus"
-	"go-zero/internal/svc"
-	"go-zero/internal/types"
+	"go-crud/internal/logic/focus"
+	"go-crud/internal/svc"
+	"go-crud/internal/types"
 )
 
 func UpdateFocusHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
@@ -29,3 +29,5 @@ func UpdateFocusHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		}
 	}
 }
+
+

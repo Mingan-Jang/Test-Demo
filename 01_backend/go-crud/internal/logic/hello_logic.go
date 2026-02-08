@@ -1,4 +1,4 @@
-// Code scaffolded by goctl. Safe to edit.
+﻿// Code scaffolded by goctl. Safe to edit.
 // goctl 1.9.2
 
 package logic
@@ -6,8 +6,8 @@ package logic
 import (
 	"context"
 
-	"go-zero/internal/svc"
-	"go-zero/internal/types"
+	"go-crud/internal/svc"
+	"go-crud/internal/types"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -31,3 +31,5 @@ func (l *HelloLogic) Hello(req *types.HelloReq) (resp *types.HelloResp, err erro
 
 	return
 }
+
+

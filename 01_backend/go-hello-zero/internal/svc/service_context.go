@@ -4,7 +4,7 @@
 package svc
 
 import (
-	"go-zero/internal/config"
+	"go-hello-zero/internal/config"
 )
 
 type ServiceContext struct {

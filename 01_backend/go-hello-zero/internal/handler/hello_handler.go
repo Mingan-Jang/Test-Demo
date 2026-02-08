@@ -7,9 +7,9 @@ import (
 	"net/http"
 
 	"github.com/zeromicro/go-zero/rest/httpx"
-	"go-zero/internal/logic"
-	"go-zero/internal/svc"
-	"go-zero/internal/types"
+	"go-hello-zero/internal/logic"
+	"go-hello-zero/internal/svc"
+	"go-hello-zero/internal/types"
 )
 
 func HelloHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {

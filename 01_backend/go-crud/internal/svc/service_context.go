@@ -1,11 +1,11 @@
-// Code scaffolded by goctl. Safe to edit.
+﻿// Code scaffolded by goctl. Safe to edit.
 // goctl 1.9.2
 
 package svc
 
 import (
-	"go-zero/internal/config"
-	"go-zero/models"
+	"go-crud/internal/config"
+	"go-crud/models"
 
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
 )
@@ -16,10 +16,10 @@ type ServiceContext struct {
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
-	// 初始化 SQL 连接
+	// ????SQL 餈
 	conn := sqlx.NewSqlConn("mysql", c.Mysql.DataSoruce)
 
-	// 初始化 FocusModel（包含 CRUD 方法，不使用缓存）
+	// ????FocusModel嚗???CRUD ?寞?嚗?雿輻蝻?嚗?
 	focusModel := models.NewFocusModel(conn, nil)
 
 	return &ServiceContext{
@@ -27,3 +27,5 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		FocusModel: focusModel,
 	}
 }
+
+

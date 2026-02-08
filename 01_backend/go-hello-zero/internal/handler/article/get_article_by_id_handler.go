@@ -7,9 +7,9 @@ import (
 	"net/http"
 
 	"github.com/zeromicro/go-zero/rest/httpx"
-	"go-zero/internal/logic/article"
-	"go-zero/internal/svc"
-	"go-zero/internal/types"
+	"go-hello-zero/internal/logic/article"
+	"go-hello-zero/internal/svc"
+	"go-hello-zero/internal/types"
 )
 
 func GetArticleByIdHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {

@@ -1,4 +1,4 @@
-// Code scaffolded by goctl. Safe to edit.
+﻿// Code scaffolded by goctl. Safe to edit.
 // goctl 1.9.2
 
 package config
@@ -13,3 +13,5 @@ type Config struct {
 type MySqlConf struct {
 	DataSoruce string
 }
+
+

@@ -1,4 +1,4 @@
-// Code scaffolded by goctl. Safe to edit.
+﻿// Code scaffolded by goctl. Safe to edit.
 // goctl 1.9.2
 
 package main
@@ -7,9 +7,9 @@ import (
 	"flag"
 	"fmt"
 
-	"go-zero/internal/config"
-	"go-zero/internal/handler"
-	"go-zero/internal/svc"
+	"go-crud/internal/config"
+	"go-crud/internal/handler"
+	"go-crud/internal/svc"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/rest"
@@ -32,3 +32,5 @@ func main() {
 	fmt.Printf("Starting server at %s:%d...\n", c.Host, c.Port)
 	server.Start()
 }
+
+

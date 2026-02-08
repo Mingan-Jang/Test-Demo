@@ -1,4 +1,4 @@
-// Code scaffolded by goctl. Safe to edit.
+﻿// Code scaffolded by goctl. Safe to edit.
 // goctl 1.9.2
 
 package focus
@@ -6,8 +6,8 @@ package focus
 import (
 	"context"
 
-	"go-zero/internal/svc"
-	"go-zero/internal/types"
+	"go-crud/internal/svc"
+	"go-crud/internal/types"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -31,3 +31,5 @@ func (l *GetFocusByIdLogic) GetFocusById(req *types.FocusRequest) (resp *types.F
 
 	return
 }
+
+

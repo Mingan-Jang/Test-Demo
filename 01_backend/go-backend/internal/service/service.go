@@ -1,144 +1,114 @@
-package service
+﻿package service
 
 import (
-	"go-backend/internal/domain"
-	"go-backend/internal/repository"
-	"time"
-
-	"github.com/google/uuid"
+"go-backend/internal/domain"
+"go-backend/internal/repository"
 )
 
-// HolidayService ?�日業�??�輯
-type HolidayService struct {
-	holidayRepo         *repository.HolidayRepository
-	customHolidayRepo   *repository.CustomHolidayRepository
-	disasterHolidayRepo *repository.DisasterHolidayRepository
+// HolidayService 假日服务接口
+type HolidayService interface {
+GetHolidays() ([]domain.HolidayOperator, error)
+GetHolidayByID(id string) (*domain.HolidayOperator, error)
+CreateHoliday(holiday *domain.HolidayOperator) error
+UpdateHoliday(id string, holiday *domain.HolidayOperator) error
+DeleteHoliday(id string) error
 }
 
-// NewHolidayService ?�建?�日?��?實�?
-func NewHolidayService(
-	holidayRepo *repository.HolidayRepository,
-	customHolidayRepo *repository.CustomHolidayRepository,
-	disasterHolidayRepo *repository.DisasterHolidayRepository,
-) *HolidayService {
-	return &HolidayService{
-		holidayRepo:         holidayRepo,
-		customHolidayRepo:   customHolidayRepo,
-		disasterHolidayRepo: disasterHolidayRepo,
-	}
+// holidayService 假日服务实现
+type holidayService struct {
+repo repository.HolidayRepository
 }
 
-// DetermineHoliday ?�斷?�代碼�?輯�??��? > 天災 > ?��?
-func (s *HolidayService) DetermineHoliday(
-	baseHoliday bool,
-	disaster bool,
-	customRule *string,
-) string {
-	// ?��?規�??�高優??
-	if customRule != nil {
-		return *customRule
-	}
-
-	// 天災?�日次優??
-	if disaster {
-		return "holiday"
-	}
-
-	// ?�後�??��?決�?
-	if baseHoliday {
-		return "holiday"
-	}
-	return "workday"
+// NewHolidayService 创建假日服务
+func NewHolidayService(repo repository.HolidayRepository, customRepo repository.CustomHolidayRepository, disasterRepo repository.DisasterHolidayRepository) HolidayService {
+return &holidayService{repo: repo}
 }
 
-// GetHolidayInfo ?�詢?�日資�?
-func (s *HolidayService) GetHolidayInfo(date time.Time, operator string) (*domain.HolidayOperator, error) {
-	return s.holidayRepo.GetHolidayByDate(date, operator)
+// GetHolidays 获取所有假日
+func (s *holidayService) GetHolidays() ([]domain.HolidayOperator, error) {
+return s.repo.GetAll()
 }
 
-// GetHolidaysByRange ?�詢?�日範�?
-func (s *HolidayService) GetHolidaysByRange(startDate, endDate time.Time, operator string) ([]domain.HolidayOperator, error) {
-	return s.holidayRepo.GetHolidaysByDateRange(startDate, endDate, operator)
+// GetHolidayByID 按ID获取假日
+func (s *holidayService) GetHolidayByID(id string) (*domain.HolidayOperator, error) {
+return s.repo.GetByID(id)
 }
 
-// CreateHoliday ?�建?�日
-func (s *HolidayService) CreateHoliday(holiday *domain.HolidayOperator) error {
-	if holiday.IsActive == "" {
-		holiday.IsActive = "Y"
-	}
-	return s.holidayRepo.CreateHoliday(holiday)
+// CreateHoliday 创建假日
+func (s *holidayService) CreateHoliday(holiday *domain.HolidayOperator) error {
+return s.repo.Create(holiday)
 }
 
-// UpdateHoliday ?�新?�日
-func (s *HolidayService) UpdateHoliday(holiday *domain.HolidayOperator) error {
-	return s.holidayRepo.UpdateHoliday(holiday)
+// UpdateHoliday 更新假日
+func (s *holidayService) UpdateHoliday(id string, holiday *domain.HolidayOperator) error {
+return s.repo.Update(holiday)
 }
 
-// DeleteHoliday ?�除?�日
-func (s *HolidayService) DeleteHoliday(id int64) error {
-	return s.holidayRepo.DeleteHoliday(id)
+// DeleteHoliday 删除假日
+func (s *holidayService) DeleteHoliday(id string) error {
+return s.repo.Delete(id)
 }
 
-// CustomHolidayService ?��?義�??�業?��?�?
-type CustomHolidayService struct {
-	repo *repository.CustomHolidayRepository
+// CustomHolidayService 自定义假日服务接口
+type CustomHolidayService interface {
+GetCustomHolidays() ([]domain.HolidayOperatorCustom, error)
+CreateCustomHoliday(holiday *domain.HolidayOperatorCustom) error
+UpdateCustomHoliday(id string, holiday *domain.HolidayOperatorCustom) error
+DeleteCustomHoliday(id string) error
 }
 
-// NewCustomHolidayService ?�建?��?義�??��??�實�?
-func NewCustomHolidayService(repo *repository.CustomHolidayRepository) *CustomHolidayService {
-	return &CustomHolidayService{repo: repo}
+// customHolidayService 自定义假日服务实现
+type customHolidayService struct {
+repo repository.CustomHolidayRepository
 }
 
-// GetCustomHolidaysByOperator ?�詢?��?義�???
-func (s *CustomHolidayService) GetCustomHolidaysByOperator(operationID string) ([]domain.HolidayOperatorCustom, error) {
-	return s.repo.GetCustomHolidaysByOperator(operationID)
+// NewCustomHolidayService 创建自定义假日服务
+func NewCustomHolidayService(repo repository.CustomHolidayRepository) CustomHolidayService {
+return &customHolidayService{repo: repo}
 }
 
-// CreateCustomHoliday ?�建?��?義�???
-func (s *CustomHolidayService) CreateCustomHoliday(holiday *domain.HolidayOperatorCustom) error {
-	if holiday.ID == "" {
-		holiday.ID = uuid.New().String()
-	}
-	if holiday.IsActive == "" {
-		holiday.IsActive = "Y"
-	}
-	return s.repo.CreateCustomHoliday(holiday)
+// GetCustomHolidays 获取所有自定义假日
+func (s *customHolidayService) GetCustomHolidays() ([]domain.HolidayOperatorCustom, error) {
+return s.repo.GetAll()
 }
 
-// UpdateCustomHoliday ?�新?��?義�???
-func (s *CustomHolidayService) UpdateCustomHoliday(holiday *domain.HolidayOperatorCustom) error {
-	return s.repo.UpdateCustomHoliday(holiday)
+// CreateCustomHoliday 创建自定义假日
+func (s *customHolidayService) CreateCustomHoliday(holiday *domain.HolidayOperatorCustom) error {
+return s.repo.Create(holiday)
 }
 
-// DeleteCustomHoliday ?�除?��?義�???
-func (s *CustomHolidayService) DeleteCustomHoliday(id string) error {
-	return s.repo.DeleteCustomHoliday(id)
+// UpdateCustomHoliday 更新自定义假日
+func (s *customHolidayService) UpdateCustomHoliday(id string, holiday *domain.HolidayOperatorCustom) error {
+return s.repo.Update(holiday)
 }
 
-// DisasterHolidayService 天災?�日業�??�輯
-type DisasterHolidayService struct {
-	repo *repository.DisasterHolidayRepository
+// DeleteCustomHoliday 删除自定义假日
+func (s *customHolidayService) DeleteCustomHoliday(id string) error {
+return s.repo.Delete(id)
 }
 
-// NewDisasterHolidayService ?�建天災?�日?��?實�?
-func NewDisasterHolidayService(repo *repository.DisasterHolidayRepository) *DisasterHolidayService {
-	return &DisasterHolidayService{repo: repo}
+// DisasterHolidayService 天灾假日服务接口
+type DisasterHolidayService interface {
+GetDisasterHolidays() ([]domain.HolidayDisaster, error)
+CreateDisasterHoliday(holiday *domain.HolidayDisaster) error
 }
 
-// GetDisasterHolidaysByDate ?�詢天災?�日
-func (s *DisasterHolidayService) GetDisasterHolidaysByDate(date time.Time) ([]domain.HolidayDisaster, error) {
-	return s.repo.GetDisasterHolidaysByDate(date)
+// disasterHolidayService 天灾假日服务实现
+type disasterHolidayService struct {
+repo repository.DisasterHolidayRepository
 }
 
-// CreateDisasterHoliday ?�建天災?�日
-func (s *DisasterHolidayService) CreateDisasterHoliday(holiday *domain.HolidayDisaster) error {
-	if holiday.IsActive == "" {
-		holiday.IsActive = "Y"
-	}
-	return s.repo.CreateDisasterHoliday(holiday)
+// NewDisasterHolidayService 创建天灾假日服务
+func NewDisasterHolidayService(repo repository.DisasterHolidayRepository) DisasterHolidayService {
+return &disasterHolidayService{repo: repo}
 }
 
-// UpdateDisasterHoliday ?�新天災?�日
-func (s *DisasterHolidayService) UpdateDisasterHoliday(holiday *domain.HolidayDisaster) error {
-	return s.repo.UpdateDisasterHoliday(holiday)
+// GetDisasterHolidays 获取所有天灾假日
+func (s *disasterHolidayService) GetDisasterHolidays() ([]domain.HolidayDisaster, error) {
+return s.repo.GetAll()
+}
+
+// CreateDisasterHoliday 创建天灾假日
+func (s *disasterHolidayService) CreateDisasterHoliday(holiday *domain.HolidayDisaster) error {
+return s.repo.Create(holiday)
 }

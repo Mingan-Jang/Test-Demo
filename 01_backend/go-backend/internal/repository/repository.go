@@ -1,140 +1,163 @@
-package repository
+﻿package repository
 
 import (
-	"go-backend/internal/domain"
-	"time"
+"go-backend/internal/domain"
 
-	"gorm.io/gorm"
+"gorm.io/gorm"
 )
 
-// HolidayRepository ?�日?�儲
-type HolidayRepository struct {
-	db *gorm.DB
+// HolidayRepository 假日仓储接口
+type HolidayRepository interface {
+GetAll() ([]domain.HolidayOperator, error)
+GetByID(id string) (*domain.HolidayOperator, error)
+Create(holiday *domain.HolidayOperator) error
+Update(holiday *domain.HolidayOperator) error
+Delete(id string) error
 }
 
-// NewHolidayRepository ?�建?�日?�儲實�?
-func NewHolidayRepository(db *gorm.DB) *HolidayRepository {
-	return &HolidayRepository{db: db}
+// holidayRepo 假日仓储实现
+type holidayRepo struct {
+db *gorm.DB
 }
 
-// GetHolidayByDate ?��??��??��??��?構查詢�???
-func (r *HolidayRepository) GetHolidayByDate(date time.Time, operator string) (*domain.HolidayOperator, error) {
-	var holiday domain.HolidayOperator
-	query := r.db.Where("date = ? AND is_active = 'Y'", date)
-	if operator != "" {
-		query = query.Where("operator = ?", operator)
-	}
-	if err := query.First(&holiday).Error; err != nil {
-		return nil, err
-	}
-	return &holiday, nil
+// NewHolidayRepository 创建假日仓储
+func NewHolidayRepository(db *gorm.DB) HolidayRepository {
+return &holidayRepo{db: db}
 }
 
-// GetHolidaysByDateRange ?�詢?��?範�??��??�日
-func (r *HolidayRepository) GetHolidaysByDateRange(startDate, endDate time.Time, operator string) ([]domain.HolidayOperator, error) {
-	var holidays []domain.HolidayOperator
-	query := r.db.Where("date BETWEEN ? AND ? AND is_active = 'Y'", startDate, endDate)
-	if operator != "" {
-		query = query.Where("operator = ?", operator)
-	}
-	if err := query.Find(&holidays).Error; err != nil {
-		return nil, err
-	}
-	return holidays, nil
+// GetAll 获取所有假日
+func (r *holidayRepo) GetAll() ([]domain.HolidayOperator, error) {
+var holidays []domain.HolidayOperator
+if err := r.db.Find(&holidays).Error; err != nil {
+return nil, err
+}
+return holidays, nil
 }
 
-// CreateHoliday ?�建?�日記�?
-func (r *HolidayRepository) CreateHoliday(holiday *domain.HolidayOperator) error {
-	return r.db.Create(holiday).Error
+// GetByID 按ID获取假日
+func (r *holidayRepo) GetByID(id string) (*domain.HolidayOperator, error) {
+var holiday domain.HolidayOperator
+if err := r.db.First(&holiday, id).Error; err != nil {
+return nil, err
+}
+return &holiday, nil
 }
 
-// UpdateHoliday ?�新?�日記�?
-func (r *HolidayRepository) UpdateHoliday(holiday *domain.HolidayOperator) error {
-	return r.db.Save(holiday).Error
+// Create 创建假日
+func (r *holidayRepo) Create(holiday *domain.HolidayOperator) error {
+return r.db.Create(holiday).Error
 }
 
-// DeleteHoliday 軟刪?��??��???
-func (r *HolidayRepository) DeleteHoliday(id int64) error {
-	return r.db.Model(&domain.HolidayOperator{}).Where("id = ?", id).Update("is_active", "N").Error
+// Update 更新假日
+func (r *holidayRepo) Update(holiday *domain.HolidayOperator) error {
+return r.db.Save(holiday).Error
 }
 
-// CustomHolidayRepository ?��?義�??�倉儲
-type CustomHolidayRepository struct {
-	db *gorm.DB
+// Delete 删除假日
+func (r *holidayRepo) Delete(id string) error {
+return r.db.Delete(&domain.HolidayOperator{}, id).Error
 }
 
-// NewCustomHolidayRepository ?�建?��?義�??�倉儲實�?
-func NewCustomHolidayRepository(db *gorm.DB) *CustomHolidayRepository {
-	return &CustomHolidayRepository{db: db}
+// CustomHolidayRepository 自定义假日仓储接口
+type CustomHolidayRepository interface {
+GetAll() ([]domain.HolidayOperatorCustom, error)
+GetByID(id string) (*domain.HolidayOperatorCustom, error)
+Create(holiday *domain.HolidayOperatorCustom) error
+Update(holiday *domain.HolidayOperatorCustom) error
+Delete(id string) error
 }
 
-// GetCustomHolidaysByOperator ?�詢?��?機�??�自訂�???
-func (r *CustomHolidayRepository) GetCustomHolidaysByOperator(operationID string) ([]domain.HolidayOperatorCustom, error) {
-	var holidays []domain.HolidayOperatorCustom
-	if err := r.db.Where("operation_id = ? AND is_active = 'Y'", operationID).Find(&holidays).Error; err != nil {
-		return nil, err
-	}
-	return holidays, nil
+// customHolidayRepo 自定义假日仓储实现
+type customHolidayRepo struct {
+db *gorm.DB
 }
 
-// GetCustomHolidayByDate ?�詢?��??��??�自訂�???
-func (r *CustomHolidayRepository) GetCustomHolidayByDate(operationID string, date time.Time) (*domain.HolidayOperatorCustom, error) {
-	var holiday domain.HolidayOperatorCustom
-	if err := r.db.Where("operation_id = ? AND date = ? AND is_active = 'Y'", operationID, date).First(&holiday).Error; err != nil {
-		return nil, err
-	}
-	return &holiday, nil
+// NewCustomHolidayRepository 创建自定义假日仓储
+func NewCustomHolidayRepository(db *gorm.DB) CustomHolidayRepository {
+return &customHolidayRepo{db: db}
 }
 
-// CreateCustomHoliday ?�建?��?義�???
-func (r *CustomHolidayRepository) CreateCustomHoliday(holiday *domain.HolidayOperatorCustom) error {
-	return r.db.Create(holiday).Error
+// GetAll 获取所有自定义假日
+func (r *customHolidayRepo) GetAll() ([]domain.HolidayOperatorCustom, error) {
+var holidays []domain.HolidayOperatorCustom
+if err := r.db.Find(&holidays).Error; err != nil {
+return nil, err
+}
+return holidays, nil
 }
 
-// UpdateCustomHoliday ?�新?��?義�???
-func (r *CustomHolidayRepository) UpdateCustomHoliday(holiday *domain.HolidayOperatorCustom) error {
-	return r.db.Save(holiday).Error
+// GetByID 按ID获取自定义假日
+func (r *customHolidayRepo) GetByID(id string) (*domain.HolidayOperatorCustom, error) {
+var holiday domain.HolidayOperatorCustom
+if err := r.db.First(&holiday, id).Error; err != nil {
+return nil, err
+}
+return &holiday, nil
 }
 
-// DeleteCustomHoliday 軟刪?�自訂義?�日
-func (r *CustomHolidayRepository) DeleteCustomHoliday(id string) error {
-	return r.db.Model(&domain.HolidayOperatorCustom{}).Where("id = ?", id).Update("is_active", "N").Error
+// Create 创建自定义假日
+func (r *customHolidayRepo) Create(holiday *domain.HolidayOperatorCustom) error {
+return r.db.Create(holiday).Error
 }
 
-// DisasterHolidayRepository 天災?�日?�儲
-type DisasterHolidayRepository struct {
-	db *gorm.DB
+// Update 更新自定义假日
+func (r *customHolidayRepo) Update(holiday *domain.HolidayOperatorCustom) error {
+return r.db.Save(holiday).Error
 }
 
-// NewDisasterHolidayRepository ?�建天災?�日?�儲實�?
-func NewDisasterHolidayRepository(db *gorm.DB) *DisasterHolidayRepository {
-	return &DisasterHolidayRepository{db: db}
+// Delete 删除自定义假日
+func (r *customHolidayRepo) Delete(id string) error {
+return r.db.Delete(&domain.HolidayOperatorCustom{}, id).Error
 }
 
-// GetDisasterHolidaysByDate ?�詢?��??��??�天?��???
-func (r *DisasterHolidayRepository) GetDisasterHolidaysByDate(date time.Time) ([]domain.HolidayDisaster, error) {
-	var holidays []domain.HolidayDisaster
-	if err := r.db.Where("disaster_date = ? AND is_active = 'Y'", date).Find(&holidays).Error; err != nil {
-		return nil, err
-	}
-	return holidays, nil
+// DisasterHolidayRepository 天灾假日仓储接口
+type DisasterHolidayRepository interface {
+GetAll() ([]domain.HolidayDisaster, error)
+GetByID(id string) (*domain.HolidayDisaster, error)
+Create(holiday *domain.HolidayDisaster) error
+Update(holiday *domain.HolidayDisaster) error
+Delete(id string) error
 }
 
-// GetDisasterHolidaysByDateRange ?�詢?��?範�??��?天災?�日
-func (r *DisasterHolidayRepository) GetDisasterHolidaysByDateRange(startDate, endDate time.Time) ([]domain.HolidayDisaster, error) {
-	var holidays []domain.HolidayDisaster
-	if err := r.db.Where("disaster_date BETWEEN ? AND ? AND is_active = 'Y'", startDate, endDate).Find(&holidays).Error; err != nil {
-		return nil, err
-	}
-	return holidays, nil
+// disasterHolidayRepo 天灾假日仓储实现
+type disasterHolidayRepo struct {
+db *gorm.DB
 }
 
-// CreateDisasterHoliday ?�建天災?�日
-func (r *DisasterHolidayRepository) CreateDisasterHoliday(holiday *domain.HolidayDisaster) error {
-	return r.db.Create(holiday).Error
+// NewDisasterHolidayRepository 创建天灾假日仓储
+func NewDisasterHolidayRepository(db *gorm.DB) DisasterHolidayRepository {
+return &disasterHolidayRepo{db: db}
 }
 
-// UpdateDisasterHoliday ?�新天災?�日
-func (r *DisasterHolidayRepository) UpdateDisasterHoliday(holiday *domain.HolidayDisaster) error {
-	return r.db.Save(holiday).Error
+// GetAll 获取所有天灾假日
+func (r *disasterHolidayRepo) GetAll() ([]domain.HolidayDisaster, error) {
+var holidays []domain.HolidayDisaster
+if err := r.db.Find(&holidays).Error; err != nil {
+return nil, err
+}
+return holidays, nil
+}
+
+// GetByID 按ID获取天灾假日
+func (r *disasterHolidayRepo) GetByID(id string) (*domain.HolidayDisaster, error) {
+var holiday domain.HolidayDisaster
+if err := r.db.First(&holiday, id).Error; err != nil {
+return nil, err
+}
+return &holiday, nil
+}
+
+// Create 创建天灾假日
+func (r *disasterHolidayRepo) Create(holiday *domain.HolidayDisaster) error {
+return r.db.Create(holiday).Error
+}
+
+// Update 更新天灾假日
+func (r *disasterHolidayRepo) Update(holiday *domain.HolidayDisaster) error {
+return r.db.Save(holiday).Error
+}
+
+// Delete 删除天灾假日
+func (r *disasterHolidayRepo) Delete(id string) error {
+return r.db.Delete(&domain.HolidayDisaster{}, id).Error
 }

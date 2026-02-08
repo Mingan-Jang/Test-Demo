@@ -6,8 +6,8 @@ package logic
 import (
 	"context"
 
-	"go-zero/internal/svc"
-	"go-zero/internal/types"
+	"go-hello-zero/internal/svc"
+	"go-hello-zero/internal/types"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )

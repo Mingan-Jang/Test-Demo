@@ -1,4 +1,4 @@
-package models
+﻿package models
 
 import (
 	"github.com/zeromicro/go-zero/core/stores/cache"
@@ -25,5 +25,7 @@ func NewFocusModel(conn sqlx.SqlConn, c cache.CacheConf, opts ...cache.Option) F
 		defaultFocusModel: newFocusModel(conn, c, opts...),
 	}
 }
+
+
 
 
