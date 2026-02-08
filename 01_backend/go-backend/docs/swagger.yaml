@@ -1,0 +1,129 @@
+definitions:
+  domain.HolidayOperator:
+    properties:
+      created_at:
+        type: string
+      date:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      is_active:
+        type: string
+      operator:
+        type: string
+      region_city:
+        type: string
+      region_town:
+        type: string
+      region_village:
+        type: string
+      source:
+        description: '''weekend'', ''disaster'', ''google'', ''custom'''
+        type: string
+      type:
+        description: '''holiday'' or ''workday'''
+        type: string
+      updated_at:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /api/v1/holidays:
+    get:
+      description: 根據日期和營運機構查詢假日
+      parameters:
+      - description: 查詢日期 (YYYY-MM-DD)
+        in: query
+        name: date
+        type: string
+      - description: 營運機構名稱
+        in: query
+        name: operator
+        type: string
+      - description: 開始日期 (YYYY-MM-DD)
+        in: query
+        name: start_date
+        type: string
+      - description: 結束日期 (YYYY-MM-DD)
+        in: query
+        name: end_date
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: 查詢假日資訊
+      tags:
+      - holidays
+    post:
+      consumes:
+      - application/json
+      description: 創建新的假日記錄
+      parameters:
+      - description: 假日資訊
+        in: body
+        name: holiday
+        required: true
+        schema:
+          $ref: '#/definitions/domain.HolidayOperator'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/domain.HolidayOperator'
+      summary: 創建假日
+      tags:
+      - holidays
+  /api/v1/holidays/{id}:
+    delete:
+      description: 軟刪除假日記錄
+      parameters:
+      - description: 假日ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+      summary: 刪除假日
+      tags:
+      - holidays
+    put:
+      consumes:
+      - application/json
+      description: 更新假日記錄
+      parameters:
+      - description: 假日ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 假日資訊
+        in: body
+        name: holiday
+        required: true
+        schema:
+          $ref: '#/definitions/domain.HolidayOperator'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.HolidayOperator'
+      summary: 更新假日
+      tags:
+      - holidays
+swagger: "2.0"

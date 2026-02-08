@@ -1,0 +1,38 @@
+@server (
+	group:  focus
+	prefix: /api/focus
+)
+service hello-api {
+	@handler GetFocus
+	get / returns (FocusResp)
+
+	@handler GetFocusById
+	get /oneFocus (FocusRequest) returns (FocusResp)
+
+	@handler AddFocus
+	post /addFocus (AddFocusRequest) returns (FocusResp)
+
+	@handler UpdateFocus
+	put /updateFocus (UpdateFocusRequest) returns (FocusResp)
+
+	@handler DeleteFocus
+	delete /deleteFocus (FocusRequest) returns (FocusResp)
+}
+
+type (
+	FocusRequest {
+		Id int64 `json:"id"`
+	}
+	AddFocusRequest {
+		Name string `json:"name"`
+	}
+	UpdateFocusRequest {
+		Id   int64  `json:"id"`
+		Name string `json:"name"`
+	}
+	FocusResp {
+		Code int    `json:"code"`
+		Msg  string `json:"msg"`
+		Data map[string]interface{} `json:"data,omitempty"`
+	}
+)

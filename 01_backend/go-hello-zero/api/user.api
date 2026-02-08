@@ -1,0 +1,19 @@
+@server (
+	group:  user
+	prefix: /api/user
+)
+service hello-api {
+	@handler AddUser
+	post /addUser (AddUserRequest) returns (UserResp)
+}
+
+type (
+	AddUserRequest {
+		Username string `json:"username"`
+	}
+	UserResp {
+		Code int    `json:"code"`
+		Msg  string `json:"msg"`
+		Data map[string]interface{} `json:"data,omitempty"`
+	}
+)

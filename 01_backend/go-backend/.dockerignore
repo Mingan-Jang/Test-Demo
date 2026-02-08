@@ -1,0 +1,51 @@
+# .dockerignore
+
+# 構建文件
+*.o
+*.a
+*.so
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# 環境
+.env
+.env.local
+.env.*.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# 系統
+.DS_Store
+.gitignore
+.git/
+.gitmodules
+
+# Node
+node_modules/
+
+# Go
+vendor/
+
+# 測試覆蓋率
+*.out
+coverage.txt
+
+# 日誌
+*.log
+
+# 應用
+holiday-api
+dist/
+build/
+
+# Docker
+docker-compose*.yml
+Dockerfile.dev

@@ -1,0 +1,5 @@
+Name: hello-api
+Host: 0.0.0.0
+Port: 8888
+Mysql:
+  DataSoruce: "root:12345@tcp(mysql:3306)/hello_db?charset=utf8mb4&parseTime=True"

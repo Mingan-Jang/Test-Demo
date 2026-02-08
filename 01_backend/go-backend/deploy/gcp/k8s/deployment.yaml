@@ -1,0 +1,123 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: holiday-api
+  namespace: holiday-system
+  labels:
+    app: holiday-api
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 8080
+      protocol: TCP
+  selector:
+    app: holiday-api
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: holiday-api
+  namespace: holiday-system
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: holiday-api
+  template:
+    metadata:
+      labels:
+        app: holiday-api
+    spec:
+      containers:
+        - name: api
+          image: gcr.io/PROJECT_ID/holiday-api:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              name: http
+          env:
+            - name: HOLIDAY_SERVER_PORT
+              value: "8080"
+            - name: HOLIDAY_SERVER_HOST
+              value: "0.0.0.0"
+            - name: HOLIDAY_DATABASE_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: holiday-secret
+                  key: db-host
+            - name: HOLIDAY_DATABASE_PORT
+              value: "5432"
+            - name: HOLIDAY_DATABASE_USERNAME
+              value: postgres
+            - name: HOLIDAY_DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: holiday-secret
+                  key: db-password
+            - name: HOLIDAY_DATABASE_DBNAME
+              value: holiday_system
+            - name: HOLIDAY_DATABASE_SSLMODE
+              value: disable
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 2
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: holiday-system
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: holiday-api-hpa
+  namespace: holiday-system
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: holiday-api
+  minReplicas: 2
+  maxReplicas: 5
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80

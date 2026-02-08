@@ -1,0 +1,61 @@
+version: "3.8"
+
+services:
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: hello-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345
+      MYSQL_DATABASE: hello_db
+      MYSQL_USER: hello_user
+      MYSQL_PASSWORD: hello_pass
+      TZ: "Asia/Shanghai"
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - hello-network
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-u",
+          "root",
+          "-p12345",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    command: --default-authentication-plugin=mysql_native_password
+
+  # Go Application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hello-api
+    environment:
+      TZ: "Asia/Shanghai"
+    ports:
+      - "8888:8888"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - hello-network
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  hello-network:
+    driver: bridge

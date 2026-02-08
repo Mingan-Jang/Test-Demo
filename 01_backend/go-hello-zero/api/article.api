@@ -1,0 +1,19 @@
+@server (
+	group:  article
+	prefix: /api/article
+)
+service hello-api {
+	@handler GetArticleById
+	get /:id (ArticleRequest) returns (ArticleResp)
+}
+
+type (
+	ArticleRequest {
+		Id int64 `path:"id"`
+	}
+	ArticleResp {
+		Code int    `json:"code"`
+		Msg  string `json:"msg"`
+		Data map[string]interface{} `json:"data,omitempty"`
+	}
+)

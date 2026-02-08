@@ -1,0 +1,19 @@
+syntax = "v1"
+
+import "api/focus.api"
+
+// 這裡改成 hello-api
+service hello-api {
+	@handler Hello
+	post / (HelloReq) returns (HelloResp)
+}
+
+type (
+	HelloReq {
+		Name string `json:"name"`
+	}
+	HelloResp {
+		Message string `json:"message"`
+	}
+)
+
