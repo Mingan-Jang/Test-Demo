@@ -4,26 +4,26 @@ import (
 	"fmt"
 	"log"
 
-	"holiday-system/internal/app"
-	"holiday-system/internal/domain"
+	"go-backend/internal/app"
+	"go-backend/internal/domain"
 )
 
-// 數據庫遷移工具
+// ?��?庫遷移工??
 func main() {
-	fmt.Println("正在初始化應用...")
+	fmt.Println("�?��?��??��???..")
 
-	// 初始化應用 (包括配置、數據庫、遷移)
+	// ?��??��???(?�括?�置?�數?�庫?�遷�?
 	application, err := app.Initialize()
 	if err != nil {
-		log.Fatalf("應用初始化失敗: %v", err)
+		log.Fatalf("?�用?��??�失?? %v", err)
 	}
 
-	fmt.Println("✓ 應用初始化成功")
+	fmt.Println("???�用?��??��???)
 
-	// 獲取數據庫實例進行驗證
+	// ?��??��?庫實例進�?驗�?
 	db := application.GetDB()
 
-	// 驗證表
+	// 驗�?�?
 	var tables []string
 	result := db.Raw(`
 		SELECT table_name
@@ -32,16 +32,16 @@ func main() {
 	`).Scan(&tables)
 
 	if result.Error != nil {
-		log.Fatalf("查詢表失敗: %v", result.Error)
+		log.Fatalf("?�詢表失?? %v", result.Error)
 	}
 
-	fmt.Println("\n已創建的表:")
+	fmt.Println("\n已創建�?�?")
 	for _, table := range tables {
 		fmt.Printf("  - %s\n", table)
 	}
 
-	// 驗證模型
-	fmt.Println("\n驗證模型結構...")
+	// 驗�?模�?
+	fmt.Println("\n驗�?模�?結�?...")
 	models := []interface{}{
 		&domain.HolidayOperator{},
 		&domain.HolidayOperatorLoct{},
@@ -51,11 +51,11 @@ func main() {
 
 	for _, model := range models {
 		if err := db.AutoMigrate(model); err != nil {
-			log.Printf("遷移 %T 失敗: %v", model, err)
+			log.Printf("?�移 %T 失�?: %v", model, err)
 		} else {
-			fmt.Printf("✓ %T 驗證成功\n", model)
+			fmt.Printf("??%T 驗�??��?\n", model)
 		}
 	}
 
-	fmt.Println("\n✓ 所有遷移完成!")
+	fmt.Println("\n???�?�遷移�???")
 }

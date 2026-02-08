@@ -17,36 +17,36 @@ const docTemplate = `{
     "paths": {
         "/api/v1/holidays": {
             "get": {
-                "description": "根據日期和營運機構查詢假日",
+                "description": "?��??��??��??��?構查詢�???,
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "holidays"
                 ],
-                "summary": "查詢假日資訊",
+                "summary": "?�詢?�日資�?",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "查詢日期 (YYYY-MM-DD)",
+                        "description": "?�詢?��? (YYYY-MM-DD)",
                         "name": "date",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "營運機構名稱",
+                        "description": "?��?機�??�稱",
                         "name": "operator",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "開始日期 (YYYY-MM-DD)",
+                        "description": "?��??��? (YYYY-MM-DD)",
                         "name": "start_date",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "結束日期 (YYYY-MM-DD)",
+                        "description": "結�??��? (YYYY-MM-DD)",
                         "name": "end_date",
                         "in": "query"
                     }
@@ -62,7 +62,7 @@ const docTemplate = `{
                 }
             },
             "post": {
-                "description": "創建新的假日記錄",
+                "description": "?�建?��??�日記�?",
                 "consumes": [
                     "application/json"
                 ],
@@ -72,10 +72,10 @@ const docTemplate = `{
                 "tags": [
                     "holidays"
                 ],
-                "summary": "創建假日",
+                "summary": "?�建?�日",
                 "parameters": [
                     {
-                        "description": "假日資訊",
+                        "description": "?�日資�?",
                         "name": "holiday",
                         "in": "body",
                         "required": true,
@@ -96,7 +96,7 @@ const docTemplate = `{
         },
         "/api/v1/holidays/{id}": {
             "put": {
-                "description": "更新假日記錄",
+                "description": "?�新?�日記�?",
                 "consumes": [
                     "application/json"
                 ],
@@ -106,17 +106,17 @@ const docTemplate = `{
                 "tags": [
                     "holidays"
                 ],
-                "summary": "更新假日",
+                "summary": "?�新?�日",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "假日ID",
+                        "description": "?�日ID",
                         "name": "id",
                         "in": "path",
                         "required": true
                     },
                     {
-                        "description": "假日資訊",
+                        "description": "?�日資�?",
                         "name": "holiday",
                         "in": "body",
                         "required": true,
@@ -135,18 +135,18 @@ const docTemplate = `{
                 }
             },
             "delete": {
-                "description": "軟刪除假日記錄",
+                "description": "軟刪?��??��???,
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "holidays"
                 ],
-                "summary": "刪除假日",
+                "summary": "?�除?�日",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "假日ID",
+                        "description": "?�日ID",
                         "name": "id",
                         "in": "path",
                         "required": true

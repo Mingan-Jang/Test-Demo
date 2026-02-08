@@ -4,22 +4,22 @@ import (
 	"fmt"
 	"log"
 
-	"holiday-system/internal/app"
+	"go-backend/internal/app"
 )
 
 func main() {
-	// åˆå§‹åŒ–æ‡‰ç”¨ (åŒ…æ‹¬é…ç½®ã€æ•¸æ“šåº«ã€é·ç§»)
+	// ?å??–æ???(?…æ‹¬?ç½®?æ•¸?šåº«?é·ç§?
 	application, err := app.Initialize()
 	if err != nil {
-		log.Fatalf("æ‡‰ç”¨åˆå§‹åŒ–å¤±æ•—: %v", err)
+		log.Fatalf("?‰ç”¨?å??–å¤±?? %v", err)
 	}
 
-	// å•Ÿå‹•æœå‹™å™¨
+	// ?Ÿå??å???
 	cfg := app.LoadConfig()
 	addr := fmt.Sprintf("%s:%d", cfg.Server.Host, cfg.Server.Port)
-	log.Printf("æœå‹™å™¨å•Ÿå‹•åœ¨ http://%s", addr)
+	log.Printf("?å??¨å??•åœ¨ http://%s", addr)
 
 	if err := application.Run(addr); err != nil {
-		log.Fatalf("æœå‹™å™¨å•Ÿå‹•å¤±æ•—: %v", err)
+		log.Fatalf("?å??¨å??•å¤±?? %v", err)
 	}
 }

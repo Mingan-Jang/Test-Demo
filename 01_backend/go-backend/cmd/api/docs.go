@@ -2,7 +2,7 @@ package main
 
 // @title Holiday System API
 // @version 0.1.0
-// @description 節假日系統 - 用於管理台灣全國假日、天災假日、自訂假日等多層級假日資料。
+// @description 節?�日系統 - ?�於管�??�灣?��??�日?�天?��??�、自訂�??��?多層級�??��??��?
 // @termsOfService http://swagger.io/terms/
 
 // @contact.name API Support
@@ -19,13 +19,13 @@ package main
 // @securityDefinitions.basic BasicAuth
 
 // @tag.name holidays
-// @tag.description "假日管理接口"
+// @tag.description "?�日管�??�口"
 
 // @tag.name custom-holidays
-// @tag.description "自訂義假日管理"
+// @tag.description "?��?義�??�管??
 
 // @tag.name disaster-holidays
-// @tag.description "天災假日管理"
+// @tag.description "天災?�日管�?"
 
 // @tag.name health
-// @tag.description "服務健康檢查"
+// @tag.description "?��??�康檢查"

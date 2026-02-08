@@ -1,0 +1,9 @@
+go 1.23.12
+
+use (
+	./01_backend/gin-demo
+	./01_backend/go-backend
+	./01_backend/go-crud
+	./01_backend/go-hello-zero
+	./01_backend/go-rpc-demo
+)

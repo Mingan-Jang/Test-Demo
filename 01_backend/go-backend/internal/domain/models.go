@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-// HolidayOperator 假日表（營運機構層級）
+// HolidayOperator ?�日表�??��?機�?層�?�?
 type HolidayOperator struct {
 	ID            int64     `gorm:"primaryKey" json:"id"`
 	Date          time.Time `gorm:"type:date;index" json:"date"`
@@ -20,12 +20,12 @@ type HolidayOperator struct {
 	CreatedAt     time.Time `gorm:"autoCreateTime" json:"created_at"`
 }
 
-// TableName 指定表名
+// TableName ?��?表�?
 func (HolidayOperator) TableName() string {
 	return "sys.holiday_operator"
 }
 
-// HolidayOperatorLoct 營運機構位置表
+// HolidayOperatorLoct ?��?機�?位置�?
 type HolidayOperatorLoct struct {
 	ID            int64     `gorm:"primaryKey" json:"id"`
 	Operator      string    `gorm:"type:varchar(100);index" json:"operator"`
@@ -40,7 +40,7 @@ func (HolidayOperatorLoct) TableName() string {
 	return "sys.holiday_operator_loct"
 }
 
-// HolidayOperatorCustom 自訂義假日表
+// HolidayOperatorCustom ?��?義�??�表
 type HolidayOperatorCustom struct {
 	ID          string    `gorm:"primaryKey;type:varchar(36)" json:"id"`
 	OperationID string    `gorm:"type:varchar(100);index" json:"operation_id"`
@@ -56,7 +56,7 @@ func (HolidayOperatorCustom) TableName() string {
 	return "sys.holiday_operator_custom"
 }
 
-// HolidayDisaster 天災公告表
+// HolidayDisaster 天災?��?�?
 type HolidayDisaster struct {
 	ID             int64     `gorm:"primaryKey" json:"id"`
 	DisasterDate   time.Time `gorm:"type:date;index" json:"disaster_date"`

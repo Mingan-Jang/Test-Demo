@@ -9,19 +9,19 @@ import (
 	"gorm.io/gorm"
 )
 
-// Config 應用配置
+// Config ?�用?�置
 type Config struct {
 	Server   ServerConfig
 	Database DatabaseConfig
 }
 
-// ServerConfig 服務器配置
+// ServerConfig ?��??��?�?
 type ServerConfig struct {
 	Port int
 	Host string
 }
 
-// DatabaseConfig 數據庫配置
+// DatabaseConfig ?��?庫�?�?
 type DatabaseConfig struct {
 	Host     string
 	Port     int
@@ -31,17 +31,17 @@ type DatabaseConfig struct {
 	SSLMode  string
 }
 
-// Load 加載配置
+// Load ?��??�置
 func Load() *Config {
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath("./config")
 	viper.AddConfigPath(".")
 
-	// 設置環境變數前綴
+	// 設置?��?變數?�綴
 	viper.SetEnvPrefix("HOLIDAY")
 
-	// 綁定環境變數到配置鍵
+	// 綁�??��?變數?��?置鍵
 	viper.BindEnv("server.port", "HOLIDAY_SERVER_PORT")
 	viper.BindEnv("server.host", "HOLIDAY_SERVER_HOST")
 	viper.BindEnv("database.host", "HOLIDAY_DATABASE_HOST")
@@ -53,13 +53,13 @@ func Load() *Config {
 
 	viper.AutomaticEnv()
 
-	// 設置默認值
+	// 設置默�???
 	setDefaults()
 
-	// 讀取配置文件
+	// 讀?��?置�?�?
 	if err := viper.ReadInConfig(); err != nil {
 		if _, ok := err.(viper.ConfigFileNotFoundError); !ok {
-			panic(fmt.Sprintf("讀取配置文件出錯: %v", err))
+			panic(fmt.Sprintf("讀?��?置�?件出?? %v", err))
 		}
 	}
 
@@ -92,7 +92,7 @@ func setDefaults() {
 	viper.SetDefault("database.sslmode", "disable")
 }
 
-// InitDatabase 初始化數據庫連接
+// InitDatabase ?��??�數?�庫??��
 func InitDatabase(cfg *Config) (*gorm.DB, error) {
 	dsn := fmt.Sprintf(
 		"host=%s port=%d user=%s password=%s dbname=%s sslmode=%s",
@@ -112,7 +112,7 @@ func InitDatabase(cfg *Config) (*gorm.DB, error) {
 	return db, nil
 }
 
-// GetDSN 獲取數據庫連接字符串
+// GetDSN ?��??��?庫�?��字符�?
 func (d *DatabaseConfig) GetDSN() string {
 	return fmt.Sprintf(
 		"host=%s port=%d user=%s password=%s dbname=%s sslmode=%s",
@@ -125,7 +125,7 @@ func (d *DatabaseConfig) GetDSN() string {
 	)
 }
 
-// GetEnvString 從環境變數獲取字符串值
+// GetEnvString 從環境�??�獲?��?符串??
 func GetEnvString(key, defaultValue string) string {
 	if value, exists := os.LookupEnv(key); exists {
 		return value
@@ -133,7 +133,7 @@ func GetEnvString(key, defaultValue string) string {
 	return defaultValue
 }
 
-// GetEnvInt 從環境變數獲取整數值
+// GetEnvInt 從環境�??�獲?�整?��?
 func GetEnvInt(key string, defaultValue int) int {
 	if value, exists := os.LookupEnv(key); exists {
 		var intVal int

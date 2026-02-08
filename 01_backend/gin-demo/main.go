@@ -5,7 +5,6 @@ import (
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-
 )
 
 type UserService struct {
@@ -16,15 +15,6 @@ type UserService struct {
 func (s UserService) ValueMethod() {
 	fmt.Println("ValueMethod:", s.Name)
 }
-
-```go
-db, err := InitDB()
- if err != nil {
-     log.Fatal(err)
- }
-user := User{Name: "Tom", Email: "tom@test.com"}
-db.Create(&user)
-```
 
 // 指標接收者
 func (s *UserService) PointerMethod() {

@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// CORS 跨域中間件
+// CORS 跨�?中�?�?
 func CORS() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
@@ -21,13 +21,13 @@ func CORS() gin.HandlerFunc {
 	}
 }
 
-// ErrorHandler 錯誤處理中間件
+// ErrorHandler ?�誤?��?中�?�?
 func ErrorHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Next()
 		if len(c.Errors) > 0 {
 			for range c.Errors {
-				// 記錄錯誤
+				// 記�??�誤
 				// logger.Error(err.Error())
 			}
 		}
